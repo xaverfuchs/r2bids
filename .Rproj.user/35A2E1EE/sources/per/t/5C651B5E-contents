@@ -1,0 +1,55 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# r2bids - Covert R data to BIDS format
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+<img src="man/figures/logo.png" alt="drawing" width="20%" align="right"/>
+
+This package provides functions for converting and storing data reprensented in R data frames in the convenient [BIDS format](https://bids.neuroimaging.io/).
+
+The BIDS format is becoming increasingly popular in neuroscience as a means of storing data sets along with structured descriptions of samples, tasks, and variables. 
+
+## Website
+Read the detailed documentation including examples here...
+
+[https://xaverfuchs.github.io/r2bids/](https://xaverfuchs.github.io/r2bids/)
+
+
+## Installation
+You can install the development version of *r2bids* from [GitHub](https://github.com/) with:
+      
+``` r
+# install.packages("devtools")
+devtools::install_github("xaverfuchs/r2bids")
+```
+
+## Example case
+
+TODO
+
+
+```{r, fig.width=7}
+library(r2bids)
+Code
+
+```
+
+
+
+
+

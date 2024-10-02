@@ -1,0 +1,7 @@
+url: https://xaverfuchs.github.io/rabBITS/
+template:
+  bootstrap: 5
+figures:
+  dev: ragg::agg_png
+  dpi: 96
+

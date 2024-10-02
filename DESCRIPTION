@@ -1,0 +1,18 @@
+Package: r2bids
+Title: Convert R data frames with behavioral data to the Brain Imaging Data Structure (BIDS) format
+Version: 0.0.1
+Authors@R: 
+    person(given="Xaver", family="Fuchs", email="xaver.fuchs@plus.ac.at", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-7690-8969"))
+Description: This package provides simple convenience functions to facilitate storing sets of behavioral data into the BIDS format.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports:
+    jsonlite
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+URL: https://xaverfuchs.github.io/r2bids/

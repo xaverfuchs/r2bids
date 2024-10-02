@@ -1,0 +1,7 @@
+url: https://xaverfuchs.github.io/r2bids/
+template:
+  bootstrap: 5
+figures:
+  dev: ragg::agg_png
+  dpi: 96
+
