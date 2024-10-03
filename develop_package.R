@@ -42,7 +42,7 @@ install() #install the package
 # Github commands
 usethis::use_github()
 usethis::use_pkgdown_github_pages() #this does not work for me
-usethis::create_from_github("xaverfuchs/rabBITS", fork = FALSE)
+#usethis::create_from_github("xaverfuchs/rabBITS", fork = FALSE)
 
 
 #git setup
