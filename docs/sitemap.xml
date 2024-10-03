@@ -13,12 +13,6 @@
     <loc>https://xaverfuchs.github.io/r2bids/articles/A_Example_with_toy_data.html</loc>
   </url>
   <url>
-    <loc>https://xaverfuchs.github.io/r2bids/articles/A_two_tap_scenario_equalVariance.html</loc>
-  </url>
-  <url>
-    <loc>https://xaverfuchs.github.io/r2bids/articles/B_two_tap_scenario_unequalVar.html</loc>
-  </url>
-  <url>
     <loc>https://xaverfuchs.github.io/r2bids/articles/index.html</loc>
   </url>
   <url>
@@ -32,27 +26,6 @@
   </url>
   <url>
     <loc>https://xaverfuchs.github.io/r2bids/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://xaverfuchs.github.io/r2bids/reference/likelihood_2Tap_EqVar.html</loc>
-  </url>
-  <url>
-    <loc>https://xaverfuchs.github.io/r2bids/reference/likelihood_2Tap_UneqVar.html</loc>
-  </url>
-  <url>
-    <loc>https://xaverfuchs.github.io/r2bids/reference/posterior_2Tap_EqVar.html</loc>
-  </url>
-  <url>
-    <loc>https://xaverfuchs.github.io/r2bids/reference/posterior_2Tap_UneqVar.html</loc>
-  </url>
-  <url>
-    <loc>https://xaverfuchs.github.io/r2bids/reference/posterior_params_2Tap_EqVar.html</loc>
-  </url>
-  <url>
-    <loc>https://xaverfuchs.github.io/r2bids/reference/posterior_params_2Tap_UneqVar.html</loc>
-  </url>
-  <url>
-    <loc>https://xaverfuchs.github.io/r2bids/reference/prior_2Tap.html</loc>
   </url>
   <url>
     <loc>https://xaverfuchs.github.io/r2bids/reference/read_bids.html</loc>

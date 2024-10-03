@@ -26,8 +26,6 @@ sticker(imgurl, package="r2bids", s_x=1, s_y=1, s_width=0.75, h_fill="white",
 usethis::use_logo(img = "logo/logoimg.png")
 
 
-#Part 4: Website creation
-pkgdown::build_site()
 
 
 #Part 5: create Namespace
@@ -38,6 +36,11 @@ devtools::document()
 #use_r()
 load_all() #load functions of package
 install() #install the package
+
+
+
+#Part 4: Website creation
+pkgdown::build_site()
 
 # Github commands
 usethis::use_github()
