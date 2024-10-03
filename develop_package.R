@@ -3,18 +3,18 @@
 library(devtools)
 create_package("/Users/b1082752/Library/Mobile Documents/com~apple~CloudDocs/WORK TEMP/12_openscience/r2bids") #only necessary once
 use_github()
-#use_r()
-load_all() #load dfunctions of package
-install() #install the package
+usethis::use_pkgdown() # create yml
+#Readme File
+use_readme_rmd()
+devtools::build_readme()
 
 
-# Website creeateion
-usethis::use_pkgdown()
-pkgdown::build_site()
+#Part 2: authoring
+usethis::use_vignette("A_Example_with_toy_data") # Authoring vignettes
+usethis::use_r("write_metadata.R") # Authtoring functions
 
 
-
-# Sticker creation
+#Part 3: Sticker creation
 library(hexSticker)
 imgurl <- "logo/bids_brain_grey.png"
 sticker(imgurl, package="r2bids", s_x=1, s_y=1, s_width=0.75, h_fill="white",
@@ -26,6 +26,19 @@ sticker(imgurl, package="r2bids", s_x=1, s_y=1, s_width=0.75, h_fill="white",
 usethis::use_logo(img = "logo/logoimg.png")
 
 
+#Part 4: Website creation
+pkgdown::build_site()
+
+
+#Part 5: create Namespace
+devtools::document()
+
+
+#Part 6: install and load
+#use_r()
+load_all() #load functions of package
+install() #install the package
+
 # Github commands
 usethis::use_github()
 usethis::use_pkgdown_github_pages() #this does not work for me
@@ -36,16 +49,10 @@ usethis::create_from_github("xaverfuchs/rabBITS", fork = FALSE)
 use_git_config(user.name = "xaverfuchs", user.email = "xfuchs@gmx.de")
 
 
-#Readme File
-use_readme_rmd()
-devtools::build_readme()
 
 
-# Authoring vignettes
-usethis::use_vignette("A_Example_with_toy_data")
 
-# Authtoring functions
-usethis::use_r("read_bids.R")
+
 
 
 

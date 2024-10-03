@@ -33,23 +33,96 @@ Read the detailed documentation including examples here...
 ## Installation
 You can install the development version of *r2bids* from [GitHub](https://github.com/) with:
       
-``` r
+```{r}
 # install.packages("devtools")
-devtools::install_github("xaverfuchs/r2bids")
+# devtools::install_github("xaverfuchs/r2bids")
 ```
+
 
 ## Example case
 
-TODO
-
-
-```{r, fig.width=7}
+```{r}
 library(r2bids)
-Code
-
 ```
 
+### Generate some toy data
+```{r}
+example_data <- data.frame(
+  ParticipantID = c(1, 2, 3, 1, 2, 3),
+  Gender=c("M", "F", "O", "M", "F", "O"),
+  Age=c(21, 32, 27, 21, 32, 27),
+  Session = c(1, 1, 1, 2, 2, 2),
+  ResponseTime = c(350, 400, 375, 415, 372, 401),
+  Accuracy = c(1, 0, 1, 1, 1, 1)
+)
+```
 
+### Validate the input data
 
+This function does renaming of variables and labels to adhere to BIDS conventions. 
+```{r}
+example_data_checked <- check_input_data(data = example_data, 
+                 participant_col = "ParticipantID", 
+                 session_col = "Session", 
+                 gender_col = "Gender")
+```
 
+### Write BIDS file
 
+```{r}
+write_bids(data = example_data_checked, output_dir = "./readme_files/example_bids", task_name = "reaction", participant_info_cols = c("age", "gender"), file_suffix = "beh")
+```
+
+### Define Metadata and write JSON file
+```{r}
+# Metadata for the example above with nested lists for each variable
+meta_data <- list(
+  participant_id = list(
+    Description = "Unique participant identifier in the format sub-XXX.",
+    Levels = list(
+      "sub-001" = "Participant 1",
+      "sub-002" = "Participant 2",
+      "sub-003" = "Participant 3"
+    )
+  ),
+  gender = list(
+    Description = "Self-reported gender of the participant.",
+    Levels = list(
+      "m" = "Male",
+      "f" = "Female",
+      "o" = "Other"
+    )
+  ),
+  age = list(
+    Description = "Age of the participant in years.",
+    Units = "years"
+  ),
+  session = list(
+    Description = "Session identifier.",
+    Levels = list(
+      "ses-01" = "First session",
+      "ses-02" = "Second session"
+    )
+  ),
+  response_time = list(
+    Description = "Response time of the participant in the task.",
+    Units = "milliseconds"
+  ),
+  accuracy = list(
+    Description = "Task accuracy (1 = correct, 0 = incorrect).",
+    Levels = list(
+      "0" = "Incorrect response",
+      "1" = "Correct response"
+    )
+  )
+)
+```
+
+```{r}
+write_metadata(output_dir = "./readme_files/example_bids", task_name = "reaction", meta_data = meta_data)
+```
+
+The resulting output looks like that:
+<img src="man/figures/folder_stucture.jpeg" alt="folder structure" width="100%" align="left"/>
+
+For more detailed example see the vignettes on the [package website](https://xaverfuchs.github.io/r2bids/)!

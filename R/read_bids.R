@@ -1,34 +1,82 @@
-#' Read a BIDS-formatted dataset
+#' Read BIDS-formatted data
 #'
-#' @param bids_dir The directory where the BIDS dataset is located.
-#' @param task_name Name of the task (used for identifying the task files).
-#'
-#' @description
-#' This function reads the behavioral data from a BIDS-formatted dataset and returns the task data.
-#' It looks for the appropriate task-related event files and loads them into an R data frame.
-#'
-#' @return A data frame containing the task-related event data from the BIDS dataset.
-#'
+#' @param bids_dir The root directory of the BIDS dataset.
+#' @param task_name The name of the task (e.g., "reaction").
+#' @param file_suffix The suffix of the task files (e.g., "beh", "events"). Default is "beh".
+#' @return A list containing the participant data and the task data.
 #' @export
 #'
-#' @examples
-#' # Assuming the BIDS dataset is stored in tempdir()
-#' bids_data <- read_bids(bids_dir = tempdir(), task_name = "reaction")
+#' @description
+#' This function searches the BIDS directory for all task-related `.tsv` files and reads the data into R.
+#' It handles cases where session folders are present as well as cases where there are no session folders.
 #'
-read_bids <- function(bids_dir, task_name) {
-  event_file <- file.path(bids_dir, sprintf("sub-\\d+_task-%s_beh.tsv", task_name))
-  event_file_path <- Sys.glob(event_file)[1]  # Get the first match, assuming one task per participant
-  
-  if (length(event_file_path) == 0) {
-    stop("Error: No BIDS task file found.")
+#' @examples
+#' # TODO
+#'
+read_bids <- function(bids_dir, task_name, file_suffix = "beh") {
+
+  # 1. Read the participants.tsv file
+  participants_file <- file.path(bids_dir, "participants.tsv")
+  if (!file.exists(participants_file)) {
+    stop("Error: No participants.tsv file found in the BIDS directory.")
   }
-  
-  data <- tryCatch({
-    read.table(event_file_path, sep = "\t", header = TRUE)
+
+  participants_data <- tryCatch({
+    read.table(participants_file, sep = "\t", header = TRUE)
   }, error = function(e) {
-    stop(paste("Error: Failed to read BIDS file:", event_file_path, ". Reason:", e$message))
+    stop(paste("Error: Failed to read participants.tsv file. Reason:", e$message))
   })
-  
-  message(paste("Task data loaded from:", event_file_path))
-  return(data)
+
+  message("Participants data loaded from: ", participants_file)
+
+  # 2. Search for all task-related .tsv files recursively
+  # Adapt the search pattern to use the user-specified file suffix
+  task_files <- list.files(bids_dir, pattern = paste0("task-", task_name, "_", file_suffix, "\\.tsv$"),
+                           recursive = TRUE, full.names = TRUE)
+
+  if (length(task_files) == 0) {
+    stop("Error: No BIDS task files found for the specified task and file suffix.")
+  }
+
+  # Initialize an empty list to store task data
+  task_data_list <- list()
+
+  # Loop through each task file
+  for (file in task_files) {
+    # Extract participant and session info from the file path
+    path_parts <- unlist(strsplit(dirname(file), split = "/|\\\\"))  # Handle different OS path separators
+    participant_str <- path_parts[grep("^sub-", path_parts)]
+    session_str <- path_parts[grep("^ses-", path_parts)]
+
+    # Read the task file
+    task_data <- tryCatch({
+      read.table(file, sep = "\t", header = TRUE)
+    }, error = function(e) {
+      stop(paste("Error: Failed to read task file:", file, ". Reason:", e$message))
+    })
+
+    # Add participant_id and session to the task data
+    task_data$participant_id <- participant_str
+
+    if (length(session_str) > 0) {
+      task_data$session <- session_str
+    } else {
+      task_data$session <- NA  # No session folder present
+    }
+
+    # Append the task data to the list
+    task_data_list[[length(task_data_list) + 1]] <- task_data
+  }
+
+
+  # Combine all task data into one data frame
+  all_task_data <- do.call(rbind, task_data_list)
+
+  message("Task data loaded from all task files.")
+
+  # 3. Return a list with participants data and the task data
+  return(list(
+    participants = participants_data,
+    task_data = all_task_data
+  ))
 }
