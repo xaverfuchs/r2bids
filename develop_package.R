@@ -11,7 +11,8 @@ devtools::build_readme()
 
 #Part 2: authoring
 usethis::use_vignette("A_Example_with_toy_data") # Authoring vignettes
-usethis::use_r("write_metadata.R") # Authtoring functions
+usethis::use_r("B006Data.R") # Authoring function
+usethis::use_data(B006Data)
 
 
 #Part 3: Sticker creation
@@ -29,7 +30,7 @@ usethis::use_logo(img = "logo/logoimg.png")
 
 
 #Part 5: create Namespace
-devtools::document()
+devtools::document() #load first
 
 
 #Part 6: install and load
