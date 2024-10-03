@@ -8,7 +8,8 @@ check_input_data(
   data,
   participant_col = "participant_id",
   session_col = "session",
-  gender_col = NULL
+  gender_col = NULL,
+  ignore_cols = NULL
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ check_input_data(
 \item{session_col}{Name of the column containing session IDs (default is "session").}
 
 \item{gender_col}{Name of the column containing gender information, if any (default is NULL, assuming there is no gender column).}
+
+\item{ignore_cols}{Character vector with variable names to ignore. Sometimes the function will not rename the data in a desirable way (for example when special characters DO have a meaning in a factor). In this case you can ignore variables and rename/recode them manually instead.}
 }
 \value{
 A validated and possibly modified data frame with the appropriate formatting.
@@ -30,7 +33,7 @@ outputs warnings or errors if issues arise.
 }
 \examples{
 # Example dataset
-example_data <- data.frame(ParticipantID = c(1, 2), Session = c(1, 1), Gender = c("Male", "Female"))
-check_input_data(data = example_data, participant_col = "ParticipantID", session_col = "Session", gender_col = "Gender")
+example_data <- data.frame(ParticipantID = c(1, 2), Session = c(1, 1), Gender = c("Male", "Female"), weird_variable=c("1_2", "3_4"))
+check_input_data(data = example_data, participant_col = "ParticipantID", session_col = "Session", gender_col = "Gender", ignore_cols=c("weird_variable"))
 
 }

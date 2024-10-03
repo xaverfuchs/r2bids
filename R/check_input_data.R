@@ -4,6 +4,7 @@
 #' @param participant_col Name of the column containing participant IDs (default is "participant_id").
 #' @param session_col Name of the column containing session IDs (default is "session").
 #' @param gender_col Name of the column containing gender information, if any (default is NULL, assuming there is no gender column).
+#' @param ignore_cols Character vector with variable names to ignore. Sometimes the function will not rename the data in a desirable way (for example when special characters DO have a meaning in a factor). In this case you can ignore variables and rename/recode them manually instead.
 #'
 #' @description
 #' This function checks that certain requirements are met by the dataset, including variable names in snake_case,
@@ -16,16 +17,20 @@
 #'
 #' @examples
 #' # Example dataset
-#' example_data <- data.frame(ParticipantID = c(1, 2), Session = c(1, 1), Gender = c("Male", "Female"))
-#' check_input_data(data = example_data, participant_col = "ParticipantID", session_col = "Session", gender_col = "Gender")
+#' example_data <- data.frame(ParticipantID = c(1, 2), Session = c(1, 1), Gender = c("Male", "Female"), weird_variable=c("1_2", "3_4"))
+#' check_input_data(data = example_data, participant_col = "ParticipantID", session_col = "Session", gender_col = "Gender", ignore_cols=c("weird_variable"))
 #'
-check_input_data <- function(data, participant_col = "participant_id", session_col = "session", gender_col = NULL) {
+check_input_data <- function(data, participant_col = "participant_id", session_col = "session", gender_col = NULL, ignore_cols=NULL) {
 
   # Step 1: convert all character variables to snake_case
   message("\nStep 1: checking variable labels")
 
   character_cols <- sapply(data, is.character) | sapply(data, is.factor)
   character_cols <- names(data)[character_cols]
+
+  if (!is.null(ignore_cols)) {
+    character_cols <- character_cols[!character_cols %in% ignore_cols]
+  }
 
   for (i in character_cols) {
     message(paste("checking variable", i))
@@ -99,10 +104,12 @@ check_input_data <- function(data, participant_col = "participant_id", session_c
 
   # Step 3: rename remaining column headers
   message("\nStep 3: checking if all variable names are snake_case")
-
   orig_names <- colnames(data)
-  renamed_names <- sapply(orig_names, to_snake_case)
-  colnames(data) <- renamed_names
+
+  if (!is.null(ignore_cols)) {
+    renamed_names <- sapply(orig_names, to_snake_case)
+    renamed_names[orig_names %in% ignore_cols] <- orig_names[orig_names %in% ignore_cols]
+  }
 
   #message which labels were renamed
   renamed_cols_index <- orig_names != renamed_names
