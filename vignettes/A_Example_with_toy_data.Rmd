@@ -80,7 +80,7 @@ This function performs the following actions:
 3) Writes a task-specific .tsv file with the behavioral data (response times, accuracy, etc.).
 
 ```{r}
-# Output directory (temporary for this example)
+# Output directory 
 output_dir <- "example_bids"
 
 # Task name for BIDS
