@@ -10,7 +10,7 @@ devtools::build_readme()
 
 
 #Part 2: authoring
-usethis::use_vignette("A_Example_with_toy_data") # Authoring vignettes
+usethis::use_vignette("B_Example_with_real_data") # Authoring vignettes
 usethis::use_r("B006Data.R") # Authoring function
 usethis::use_data(B006Data)
 

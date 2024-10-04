@@ -49,6 +49,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="articles/A_Example_with_toy_data.html">BIDS conversion example with toy data</a>
+    <a class="dropdown-item" href="articles/B_Example_with_real_data.html">BIDS conversion example with data from a tactile perception study (B006)</a>
   </div>
 </li>
       </ul>
@@ -133,7 +134,10 @@
 <span><span class="co">#&gt; renamed variable: ResponseTime -&gt; response_time</span></span>
 <span><span class="co">#&gt; renamed variable: Accuracy -&gt; accuracy</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Step 4: checking correct coding of gender variable</span></span></code></pre></div>
+<span><span class="co">#&gt; Step 4: checking correct coding of gender variable</span></span>
+<span><span class="co">#&gt; Warning in check_input_data(data = example_data, participant_col =</span></span>
+<span><span class="co">#&gt; "ParticipantID", : Invalid values found in gender column. Please recode to 'm',</span></span>
+<span><span class="co">#&gt; 'f', or 'o'.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="write-bids-file">Write BIDS file<a class="anchor" aria-label="anchor" href="#write-bids-file"></a>

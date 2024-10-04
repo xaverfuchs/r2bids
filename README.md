@@ -90,19 +90,12 @@ example_data_checked <- check_input_data(data = example_data,
 
 ``` r
 write_bids(data = example_data_checked, output_dir = "./readme_files/example_bids", task_name = "reaction", participant_info_cols = c("age", "gender"), file_suffix = "beh")
-#> Main BIDS directory successfully created: ./readme_files/example_bids
 #> Participants data saved: ./readme_files/example_bids/participants.tsv
-#> Folder successfully created: ./readme_files/example_bids/sub-001/ses-01
 #> Task data saved: ./readme_files/example_bids/sub-001/ses-01/sub-001_task-reaction_beh.tsv
-#> Folder successfully created: ./readme_files/example_bids/sub-001/ses-02
 #> Task data saved: ./readme_files/example_bids/sub-001/ses-02/sub-001_task-reaction_beh.tsv
-#> Folder successfully created: ./readme_files/example_bids/sub-002/ses-01
 #> Task data saved: ./readme_files/example_bids/sub-002/ses-01/sub-002_task-reaction_beh.tsv
-#> Folder successfully created: ./readme_files/example_bids/sub-002/ses-02
 #> Task data saved: ./readme_files/example_bids/sub-002/ses-02/sub-002_task-reaction_beh.tsv
-#> Folder successfully created: ./readme_files/example_bids/sub-003/ses-01
 #> Task data saved: ./readme_files/example_bids/sub-003/ses-01/sub-003_task-reaction_beh.tsv
-#> Folder successfully created: ./readme_files/example_bids/sub-003/ses-02
 #> Task data saved: ./readme_files/example_bids/sub-003/ses-02/sub-003_task-reaction_beh.tsv
 ```
 

@@ -49,6 +49,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/A_Example_with_toy_data.html">BIDS conversion example with toy data</a>
+    <a class="dropdown-item" href="../articles/B_Example_with_real_data.html">BIDS conversion example with data from a tactile perception study (B006)</a>
   </div>
 </li>
       </ul>
@@ -72,7 +73,7 @@
                         <h4 data-toc-skip class="author">Dr. Xaver
 Fuchs</h4>
             
-            <h4 data-toc-skip class="date">October 03, 2024</h4>
+            <h4 data-toc-skip class="date">October 04, 2024</h4>
       
       
       <div class="d-none name"><code>A_Example_with_toy_data.Rmd</code></div>
@@ -161,15 +162,18 @@ step.</p>
 <span><span class="co">#&gt; renamed variable: Accuracy -&gt; accuracy</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Step 4: checking correct coding of gender variable</span></span>
+<span><span class="co">#&gt; Warning in check_input_data(data = example_data, participant_col =</span></span>
+<span><span class="co">#&gt; "ParticipantID", : Invalid values found in gender column. Please recode to 'm',</span></span>
+<span><span class="co">#&gt; 'f', or 'o'.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">example_data_checked</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   participant_id gender age session response_time accuracy</span></span>
-<span><span class="co">#&gt; 1        sub-001      m  21  ses-01           350        1</span></span>
-<span><span class="co">#&gt; 2        sub-002      f  32  ses-01           400        0</span></span>
-<span><span class="co">#&gt; 3        sub-003      o  27  ses-01           375        1</span></span>
-<span><span class="co">#&gt; 4        sub-001      m  21  ses-02           415        1</span></span>
-<span><span class="co">#&gt; 5        sub-002      f  32  ses-02           372        1</span></span>
-<span><span class="co">#&gt; 6        sub-003      o  27  ses-02           401        1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        sub-001      M  21  ses-01           350        1</span></span>
+<span><span class="co">#&gt; 2        sub-002      F  32  ses-01           400        0</span></span>
+<span><span class="co">#&gt; 3        sub-003      O  27  ses-01           375        1</span></span>
+<span><span class="co">#&gt; 4        sub-001      M  21  ses-02           415        1</span></span>
+<span><span class="co">#&gt; 5        sub-002      F  32  ses-02           372        1</span></span>
+<span><span class="co">#&gt; 6        sub-003      O  27  ses-02           401        1</span></span></code></pre></div>
 <p>If the input data is valid, you can proceed to the next steps.</p>
 </div>
 <div class="section level2">
@@ -186,7 +190,7 @@ session numbers.</li>
 times, accuracy, etc.).</li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Output directory (temporary for this example)</span></span>
+<code class="sourceCode R"><span><span class="co"># Output directory </span></span>
 <span><span class="va">output_dir</span> <span class="op">&lt;-</span> <span class="st">"example_bids"</span></span>
 <span></span>
 <span><span class="co"># Task name for BIDS</span></span>
@@ -348,9 +352,9 @@ read_bids().</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_loaded</span><span class="op">$</span><span class="va">participants</span></span>
 <span><span class="co">#&gt;   participant_id age gender</span></span>
-<span><span class="co">#&gt; 1        sub-001  21      m</span></span>
-<span><span class="co">#&gt; 2        sub-002  32      f</span></span>
-<span><span class="co">#&gt; 3        sub-003  27      o</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        sub-001  21      M</span></span>
+<span><span class="co">#&gt; 2        sub-002  32      F</span></span>
+<span><span class="co">#&gt; 3        sub-003  27      O</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_loaded</span><span class="op">$</span><span class="va">task_data</span></span>
 <span><span class="co">#&gt;   participant_id session response_time accuracy</span></span>

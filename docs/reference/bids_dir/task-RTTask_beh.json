@@ -1,0 +1,6 @@
+{
+  "response_time": {
+    "Description": "Response time in milliseconds",
+    "Units": "ms"
+  }
+}

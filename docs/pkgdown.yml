@@ -3,7 +3,8 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   A_Example_with_toy_data: A_Example_with_toy_data.html
-last_built: 2024-10-03T08:43Z
+  B_Example_with_real_data: B_Example_with_real_data.html
+last_built: 2024-10-04T15:28Z
 urls:
   reference: https://xaverfuchs.github.io/r2bids/reference
   article: https://xaverfuchs.github.io/r2bids/articles
