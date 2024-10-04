@@ -1,2 +1,4 @@
 readme_files
 .Rproj.user
+inst/doc
+pkgdown
