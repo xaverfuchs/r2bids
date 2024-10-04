@@ -20,7 +20,7 @@ This function does not return anything but writes a JSON file to the output dire
 This function creates a BIDS-compliant JSON metadata file for the task data.
 }
 \examples{
-meta_data <- list(response_time = "Response time in milliseconds")
-write_metadata(output_dir = getwd(), task_name = "reaction_time", meta_data = meta_data)
+meta_data <- list(response_time = list(Description = "Response time in milliseconds", Units = "ms"))
+write_metadata(output_dir = "bids_dir", task_name = "RTTask", meta_data = meta_data)
 
 }

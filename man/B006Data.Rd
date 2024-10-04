@@ -3,7 +3,7 @@
 \docType{data}
 \name{B006Data}
 \alias{B006Data}
-\title{Data from the Experiment B006 from the Reach and Touch Lab (Tobias Heed)}
+\title{Data from the Experiment B006}
 \format{
 A data frame with 32455 rows and 30 variables:
 \describe{

@@ -11,10 +11,15 @@
 #' It handles cases where session folders are present as well as cases where there are no session folders.
 #'
 #' @examples
-#' # TODO
+#' data <- data.frame(participant_id = c(1, 1, 2, 2),
+#'                    session = c(1, 2, 1, 2),
+#'                    age = c(25, 25, 30, 30),
+#'                    gender = c('m', 'm', 'f', 'f'),
+#'                    response_time = c(100, 200, 150, 180))
+#' write_bids(data, output_dir = "bids_dir", task_name = "RTTask", participant_info_cols = c("age", "gender"))
+#' read_bids(bids_dir = "bids_dir", task_name = "RTTask")
 #'
 read_bids <- function(bids_dir, task_name, file_suffix = "beh") {
-
   # 1. Read the participants.tsv file
   participants_file <- file.path(bids_dir, "participants.tsv")
   if (!file.exists(participants_file)) {

@@ -10,8 +10,8 @@
 #' @export
 #'
 #' @examples
-#' meta_data <- list(response_time = "Response time in milliseconds")
-#' write_metadata(output_dir = getwd(), task_name = "reaction_time", meta_data = meta_data)
+#' meta_data <- list(response_time = list(Description = "Response time in milliseconds", Units = "ms"))
+#' write_metadata(output_dir = "bids_dir", task_name = "RTTask", meta_data = meta_data)
 #'
 write_metadata <- function(output_dir, task_name, meta_data) {
   json_file <- file.path(output_dir, sprintf("task-%s_beh.json", task_name))
