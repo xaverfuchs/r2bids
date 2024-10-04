@@ -1,4 +1,4 @@
-#' Data from the Experiment B006 from the Reach and Touch Lab (Tobias Heed)
+#' Data from the Experiment B006
 #'
 #' These data are from an experiment on touch perception in humans that applied the so-called Limb Identification Task.
 #' In each trial, participants receive two stimuli that were either on the same arm or on two different arms and decided
