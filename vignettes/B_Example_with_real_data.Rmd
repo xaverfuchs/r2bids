@@ -1,0 +1,262 @@
+---
+title: "BIDS conversion example with data from a tactile perception study (B006)"
+author: "Dr. Xaver Fuchs"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A_Example_with_toy_data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(r2bids)
+```
+
+In this vignette we will demonstrate how the functions of the package can be applied to actual data from a tactile perception experiment that assessed responses and reaction times to stimuli. We will use the B006 data set that is included in the package. 
+
+If you have not read the vignette "BIDS conversion example with toy data", we recommend to do that first because in the present article, no detailed descriptions about the functions will be given. 
+
+## Step 1: Load and Inspect B006 Data Set
+
+To see background information about the data set or the experiment, we refer to the documentation (type "?B006Data") or see the [article](https://doi.org/10.1101/2024.02.01.578364).
+
+```{r}
+data("B006Data")
+```
+
+```{r}
+str(B006Data)
+```
+
+## Step 2: Prepare and Validate Data
+
+Before we can apply the validate_input_data() function, some renaming and adjustments of variables is necessary. 
+For simplicity of the documentation, we will also reduce the data set to contain the most important variables only. 
+
+We will use tidyverse functions for the cleaning up. 
+
+```{r, message=FALSE}
+library(dplyr)
+```
+
+### Variable Selection
+
+```{r}
+B006Data_bids <- B006Data %>%
+  select(Participant, Age, Sex, Arm_top, Length_lower_arm, Run, trial_in_run=Trialnumber,
+         Posture, StimSide, StimSegment, SOA, 
+         Tactor1Side, Tactor1Segment, Tactor2Side, Tactor2Segment,
+         Response_correct, RT) %>% 
+  arrange(Participant, Posture, Run, trial_in_run)
+
+head(B006Data_bids)
+```
+
+### Variable Recoding
+
+Some variables in the data set need fixing before we can run the check_input_data() function.
+Also, we do not have a session identifier. 
+There are two "Runs" in the data and for each one the variable "Trial" starts again with one. 
+The runs are not separate session though, so we will create a new trial variable that counts the trials across the two runs. 
+
+```{r}
+B006Data_bids <- B006Data_bids %>% 
+  mutate(Participant=as.numeric(gsub("B006b-", "", Participant)),
+         Run=as.numeric(gsub("Run", "", Run)),
+         Sex=recode_factor(Sex, "female"="f", "male"="m"),
+         Response_correct=as.numeric(Response_correct),
+         RT=as.numeric(RT),
+         session=1) %>% 
+  group_by(Participant) %>% 
+  mutate(Trial=1:n()) %>% 
+  ungroup()
+```
+
+
+### Validate the Data Set
+
+```{r}
+B006Data_bids <- check_input_data(B006Data_bids, participant_col = "Participant", 
+                                  session_col = "session", 
+                                  gender_col = "Sex")
+```
+
+Now we check the data set
+```{r}
+str(B006Data_bids)
+```
+That looks good. Some variables are coded as factors but it should not matter because when writing to a tsv file, the labels will be used. 
+
+## Step 3: Write the BIDS data
+
+Note that we have several variables this time that will be passed to the participant_info_cols argument to be written to the participants.tsv
+
+```{r}
+# Output directory 
+output_dir <- "example_bids2"
+
+# Task name for BIDS
+task_name <- "LID"
+
+# Create the BIDS dataset
+write_bids(data = B006Data_bids, output_dir = output_dir, 
+           task_name = task_name, 
+           participant_info_cols = c("age", "gender", "arm_top", "length_lower_arm"), 
+           file_suffix = "beh")
+
+```
+
+## Step 4: Define and Write JSON Metadata
+
+Next, we define the metadata for the task, which describe the behavioral variables recorded during the experiment (the task data contained in the tsv files).
+
+
+The metadata is a nested list where each element describes a specific column in the dataset. The nested lists descrbibe keys belonging to that variable. 
+
+```{r}
+# Metadata with nested lists for each variable
+meta_data <- list(
+  participant_id = list(
+    Description = "Unique participant identifier in the format sub-XXX."
+  ),
+  age = list(
+    Description = "Age of the participant in years.",
+    Units = "years"
+  ),
+  gender = list(
+    Description = "Self-reported gender of the participant.",
+    Levels = list(
+      "m" = "Male",
+      "f" = "Female"
+    )
+  ),
+  arm_top = list(
+    Description = "Indicates which arm was on top in a crossed posture.",
+    Levels = list(
+      "right" = "right arm",
+      "left" = "left arm"
+    )
+  ),
+  length_lower_arm = list(
+    Description = "Length of the participant's lower arm in centimeters.",
+    Units = "cm"
+  ),
+  run = list(
+    Description = "Run number in the experiment (e.g., first, second, etc.).",
+    Levels = list(
+      "1" = "first run",
+      "2" = "second run"
+    )
+  ),
+  trial_in_run = list(
+    Description = "Trial number within the run."
+  ),
+  posture = list(
+    Description = "Posture of the participant during the task.",
+    Levels = list(
+      "crossed" = "crossed arm posture",
+      "uncrossed" = "uncrossed arm posture"
+    )
+  ),
+  stim_side = list(
+    Description = "Whether the two stimuli where on the same anatomical body side (e.g., both on the left arm).",
+    Levels = list(
+      "same" = "stimuli presented on same body side",
+      "different" = "stimuli presented across different body sides"
+    )
+  ),
+  stim_segment = list(
+    Description = "Whether the stimuli were presented within the same type of anatomical segment (upper arm or lower arm",
+    Levels = list(
+      "same" = "stimuli presented within same arm segment",
+      "different" = "stimuli presented across different arm segments"
+    )
+  ),
+  soa = list(
+    Description = "Stimulus onset asynchrony (the time difference between the two stimuli's onsets) in milliseconds.",
+    Units = "ms"
+  ),
+  tactor1side = list(
+    Description = "The antomical body side where the first tactor was applied.",
+    Levels = list(
+      "left" = "left body side",
+      "right" = "right body side"
+    )
+  ),
+  tactor1segment = list(
+    Description = "The arm segment where the first stimulus was applied.",
+    Levels = list(
+      "upper" = "upper arm",
+      "lower" = "forearm"
+    )
+  ),
+  tactor2side = list(
+    Description = "The antomical body side where the second tactor was applied.",
+    Levels = list(
+      "left" = "left body side",
+      "right" = "right body side"
+    )
+  ),
+  tactor2segment = list(
+    Description = "The arm segment where the second stimulus was applied.",
+    Levels = list(
+      "upper" = "upper arm",
+      "lower" = "forearm"
+    )
+  ),
+  response_correct = list(
+    Description = "Indicates whether the response was correct.",
+    Levels = list(
+      "0" = "Incorrect",
+      "1" = "Correct"
+    )
+  ),
+  rt = list(
+    Description = "Reaction time.",
+    Units = "milliseconds"
+  ),
+  session = list(
+    Description = "Session identifier. There was one session only.",
+    Levels = list(
+      "1" = "First session"
+    )
+  ),
+  trial = list(
+    Description = "Overall trial number across the entire experiment."
+  )
+)
+
+```
+
+Now the JSON file will be added to the directory.
+
+```{r}
+write_metadata(output_dir = output_dir, task_name = task_name, meta_data = meta_data)
+```
+
+## Step 5: Read and Inspect the Generated Files
+
+Once the files are created, you can laod them again with the function read_bids().
+
+```{r}
+data_loaded <- read_bids(bids_dir = "example_bids2", task_name = task_name, file_suffix = "beh")
+```
+
+The output is a list with the participant data and the task data.
+
+```{r}
+data_loaded$participants
+```
+
+```{r}
+head(data_loaded$task_data)
+```
+

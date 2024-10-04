@@ -1,0 +1,110 @@
+{
+  "participant_id": {
+    "Description": "Unique participant identifier in the format sub-XXX."
+  },
+  "age": {
+    "Description": "Age of the participant in years.",
+    "Units": "years"
+  },
+  "gender": {
+    "Description": "Self-reported gender of the participant.",
+    "Levels": {
+      "m": "Male",
+      "f": "Female"
+    }
+  },
+  "arm_top": {
+    "Description": "Indicates which arm was on top in a crossed posture.",
+    "Levels": {
+      "right": "right arm",
+      "left": "left arm"
+    }
+  },
+  "length_lower_arm": {
+    "Description": "Length of the participant's lower arm in centimeters.",
+    "Units": "cm"
+  },
+  "run": {
+    "Description": "Run number in the experiment (e.g., first, second, etc.).",
+    "Levels": {
+      "1": "first run",
+      "2": "second run"
+    }
+  },
+  "trial_in_run": {
+    "Description": "Trial number within the run."
+  },
+  "posture": {
+    "Description": "Posture of the participant during the task.",
+    "Levels": {
+      "crossed": "crossed arm posture",
+      "uncrossed": "uncrossed arm posture"
+    }
+  },
+  "stim_side": {
+    "Description": "Whether the two stimuli where on the same anatomical body side (e.g., both on the left arm).",
+    "Levels": {
+      "same": "stimuli presented on same body side",
+      "different": "stimuli presented across different body sides"
+    }
+  },
+  "stim_segment": {
+    "Description": "Whether the stimuli were presented within the same type of anatomical segment (upper arm or lower arm",
+    "Levels": {
+      "same": "stimuli presented within same arm segment",
+      "different": "stimuli presented across different arm segments"
+    }
+  },
+  "soa": {
+    "Description": "Stimulus onset asynchrony (the time difference between the two stimuli's onsets) in milliseconds.",
+    "Units": "ms"
+  },
+  "tactor1side": {
+    "Description": "The antomical body side where the first tactor was applied.",
+    "Levels": {
+      "left": "left body side",
+      "right": "right body side"
+    }
+  },
+  "tactor1segment": {
+    "Description": "The arm segment where the first stimulus was applied.",
+    "Levels": {
+      "upper": "upper arm",
+      "lower": "forearm"
+    }
+  },
+  "tactor2side": {
+    "Description": "The antomical body side where the second tactor was applied.",
+    "Levels": {
+      "left": "left body side",
+      "right": "right body side"
+    }
+  },
+  "tactor2segment": {
+    "Description": "The arm segment where the second stimulus was applied.",
+    "Levels": {
+      "upper": "upper arm",
+      "lower": "forearm"
+    }
+  },
+  "response_correct": {
+    "Description": "Indicates whether the response was correct.",
+    "Levels": {
+      "0": "Incorrect",
+      "1": "Correct"
+    }
+  },
+  "rt": {
+    "Description": "Reaction time.",
+    "Units": "milliseconds"
+  },
+  "session": {
+    "Description": "Session identifier. There was one session only.",
+    "Levels": {
+      "1": "First session"
+    }
+  },
+  "trial": {
+    "Description": "Overall trial number across the entire experiment."
+  }
+}
