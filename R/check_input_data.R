@@ -34,15 +34,18 @@ check_input_data <- function(data, participant_col = "participant_id", session_c
 
   for (i in character_cols) {
     message(paste("checking variable", i))
-    orig_labels <- data[, i]
-    data[, i] <- to_snake_case(data[, i])
+
+    orig_labels <- data[[i]]
+    renamed_labels <- to_snake_case(orig_labels)
 
     #message which labels were renamed
-    renamed_labels_index <- orig_labels!=data[, i]
-    renamed_labels_df <- unique(data.frame(original=orig_labels, renamed=data[, i]))
+    renamed_labels_index <- orig_labels != renamed_labels
+    renamed_labels_df <- unique(data.frame(original=orig_labels, renamed=renamed_labels)[renamed_labels_index, ])
 
-    for (k in 1:nrow(renamed_labels_df)) {
-      message(paste("renamed variable label:", renamed_labels_df[k, "original"], "->", renamed_labels_df[k, "renamed"]))
+    if (nrow(renamed_labels_df)>0) {
+      for (k in 1:nrow(renamed_labels_df)) {
+        message(paste("renamed variable label:", renamed_labels_df[k, "original"], "->", renamed_labels_df[k, "renamed"]))
+      }
     }
   }
 
@@ -61,9 +64,9 @@ check_input_data <- function(data, participant_col = "participant_id", session_c
     message(paste("renamed variable:", participant_col, "-> participant_id"))
   }
 
-  if (is.numeric(data[, "participant_id"])) {
-    orig_ids <- data[, "participant_id"]
-    renamed_ids <- sprintf("sub-%03d", as.numeric(data[, "participant_id"]))
+  if (is.numeric(data[["participant_id"]])) {
+    orig_ids <- data[["participant_id"]]
+    renamed_ids <- sprintf("sub-%03d", as.numeric(orig_ids))
 
     data[, "participant_id"] <- renamed_ids
 
@@ -78,9 +81,9 @@ check_input_data <- function(data, participant_col = "participant_id", session_c
     message(paste("renamed variable:", session_col, "-> session"))
   }
 
-  if (is.numeric(data[, "session"])) {
-    orig_ses <- data[, "session"]
-    renamed_ses <- sprintf("ses-%02d", as.numeric(data[, "session"]))
+  if (is.numeric(data[["session"]])) {
+    orig_ses <- data[["session"]]
+    renamed_ses <- sprintf("ses-%02d", as.numeric(orig_ses))
 
     data[, "session"] <- renamed_ses
 
@@ -105,11 +108,13 @@ check_input_data <- function(data, participant_col = "participant_id", session_c
   # Step 3: rename remaining column headers
   message("\nStep 3: checking if all variable names are snake_case")
   orig_names <- colnames(data)
+  renamed_names <- to_snake_case(orig_names)
 
   if (!is.null(ignore_cols)) {
-    renamed_names <- sapply(orig_names, to_snake_case)
     renamed_names[orig_names %in% ignore_cols] <- orig_names[orig_names %in% ignore_cols]
   }
+
+  names(data) <- renamed_names
 
   #message which labels were renamed
   renamed_cols_index <- orig_names != renamed_names
@@ -123,7 +128,7 @@ check_input_data <- function(data, participant_col = "participant_id", session_c
   if (!is.null(gender_col)) {
     message("\nStep 4: checking correct coding of gender variable")
 
-    if (any(!data[, "gender"] %in% c("m", "f", "o"))) {
+    if (any(!data[["gender"]] %in% c("m", "f", "o"))) {
       warning(paste("Invalid values found in gender column. Please recode to 'm', 'f', or 'o'."))
     }
   }
