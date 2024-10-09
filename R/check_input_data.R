@@ -19,7 +19,11 @@
 #' # Example dataset
 #' example_data <- data.frame(ParticipantID = c(1, 2), Session = c(1, 1), Gender = c("Male", "Female"), weird_variable=c("1_2", "3_4"))
 #' check_input_data(data = example_data, participant_col = "ParticipantID", session_col = "Session", gender_col = "Gender", ignore_cols=c("weird_variable"))
-#'
+#' # Another example with an alphanumeric participant id
+#' example_data2 <- data.frame(participant_id = c("ab123", "sub-123C3"), session = c("ses-01", "ses-01"), dv_var=c(0.564, 2.123))
+#' check_input_data(data = example_data2)
+
+
 check_input_data <- function(data, participant_col = "participant_id", session_col = "session", gender_col = NULL, ignore_cols=NULL) {
 
   # Step 1: convert all character variables to snake_case
@@ -28,8 +32,16 @@ check_input_data <- function(data, participant_col = "participant_id", session_c
   character_cols <- sapply(data, is.character) | sapply(data, is.factor)
   character_cols <- names(data)[character_cols]
 
+  #ignore the participant and session cols
+  character_cols <- character_cols[!character_cols %in% c(participant_col, session_col)]
+
+  #ignore the ignore col and gender col
   if (!is.null(ignore_cols)) {
     character_cols <- character_cols[!character_cols %in% ignore_cols]
+  }
+
+  if (!is.null(gender_col)) {
+    character_cols <- character_cols[!character_cols %in% gender_col]
   }
 
   for (i in character_cols) {
@@ -44,6 +56,7 @@ check_input_data <- function(data, participant_col = "participant_id", session_c
 
     if (nrow(renamed_labels_df)>0) {
       for (k in 1:nrow(renamed_labels_df)) {
+        data[data[, i]==renamed_labels_df$original[k], i] <- renamed_labels_df$renamed[k]
         message(paste("renamed variable label:", renamed_labels_df[k, "original"], "->", renamed_labels_df[k, "renamed"]))
       }
     }
@@ -59,38 +72,58 @@ check_input_data <- function(data, participant_col = "participant_id", session_c
     stop("Error: The specified session column does not exist in the data.")
   }
 
+  #scrutinize participant id: they can either be numeric, or alphanumeric, it can start with "sub-" already or it needs be added
   if (participant_col != "participant_id") {
     names(data)[names(data)==participant_col] <- "participant_id"
     message(paste("renamed variable:", participant_col, "-> participant_id"))
   }
 
-  if (is.numeric(data[["participant_id"]])) {
-    orig_ids <- data[["participant_id"]]
-    renamed_ids <- sprintf("sub-%03d", as.numeric(orig_ids))
+  ids_stripped <- gsub(pattern = "^sub-", replacement="", x=data[["participant_id"]]) #initially strip sub-
 
-    data[, "participant_id"] <- renamed_ids
-
-    message(paste("renamed ids to", paste(head(unique(renamed_ids)), collapse = ", "), "...")) #message which ids were renamed
-  }
-  else {
-    stop("Error: The participant identifier column needs to be numeric")
+  if (any(!grepl("^[a-zA-Z0-9]+$", ids_stripped))) {
+    stop(paste("The participant identifier column needs to be alphanumeric, except for a 'sub-' prefix. \nThese ids are not allowed:",
+               paste(unique(ids_stripped[!grepl("^[a-zA-Z0-9]+$", ids_stripped)]), collapse = "\n")))
   }
 
+  if (any(data[["participant_id"]]==ids_stripped)) {
+    orig_ids <- ids_stripped
+
+    #add trailing zeroes if the id is numeric
+    if (is.numeric(orig_ids)) {
+      renamed_ids <- paste("sub-", sprintf("%03d", as.numeric(orig_ids)), sep="") #add sub- and zero padding
+    }
+    else {
+      renamed_ids <- paste("sub-", orig_ids, sep="") #add sub-
+    }
+    message(paste("renamed ids to", paste(head(unique(renamed_ids)), collapse = ", "), "..."))
+    data[["participant_id"]] <- renamed_ids
+  }
+
+  #scrutinize session id
   if (session_col != "session") {
     names(data)[names(data)==session_col] <- "session"
     message(paste("renamed variable:", session_col, "-> session"))
   }
 
-  if (is.numeric(data[["session"]])) {
-    orig_ses <- data[["session"]]
-    renamed_ses <- sprintf("ses-%02d", as.numeric(orig_ses))
+  ses_stripped <- gsub(pattern = "^ses-", replacement="", x=data[["session"]]) #initially strip sub-
 
-    data[, "session"] <- renamed_ses
-
-    message(paste("renamed sessions to", paste(head(unique(renamed_ses)), collapse = ", "), "...")) #message which ids were renamed
+  if (any(!grepl("^[0-9]+$", ses_stripped))) {
+    stop(paste("The session identifier column needs to numeric, except for a 'ses-' prefix. \nThese sessions are not allowed:",
+               paste(unique(ses_stripped[!grepl("^[0-9]+$", ses_stripped)]), collapse = "\n")))
   }
-  else {
-    stop("Error: The session identifier column needs to be numeric")
+
+  if (any(data[["session"]]==ses_stripped)) {
+    orig_ses <- ses_stripped
+
+    #add trailing zeroes if the ses id is numeric
+    if (is.numeric(orig_ses)) {
+      renamed_ses <- paste("ses-", sprintf("%02d", as.numeric(orig_ses)), sep="") #add sub- and zero padding
+    }
+    else {
+      renamed_ses <- paste("ses-", orig_ses, sep="") #add sub-
+    }
+    message(paste("renamed sessions to", paste(head(unique(renamed_ses)), collapse = ", "), "..."))
+    data[["session"]] <- renamed_ses
   }
 
   # if exists: rename gender variable
@@ -119,9 +152,10 @@ check_input_data <- function(data, participant_col = "participant_id", session_c
   #message which labels were renamed
   renamed_cols_index <- orig_names != renamed_names
   renamed_cols_df <- unique(data.frame(original=orig_names, renamed=renamed_names)[renamed_cols_index, ])
-
-  for (i in 1:nrow(renamed_cols_df)) {
-    message(paste("renamed variable:", renamed_cols_df[i, "original"], "->", renamed_cols_df[i, "renamed"]))
+  if (nrow(renamed_cols_df)>0) {
+    for (i in 1:nrow(renamed_cols_df)) {
+      message(paste("renamed variable:", renamed_cols_df[i, "original"], "->", renamed_cols_df[i, "renamed"]))
+    }
   }
 
   # Optional step 4: check gender column
