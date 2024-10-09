@@ -73,7 +73,7 @@
                         <h4 data-toc-skip class="author">Dr. Xaver
 Fuchs</h4>
             
-            <h4 data-toc-skip class="date">October 04, 2024</h4>
+            <h4 data-toc-skip class="date">October 09, 2024</h4>
       
       
       <div class="d-none name"><code>A_Example_with_toy_data.Rmd</code></div>
@@ -144,16 +144,12 @@ step.</p>
 <span>                 gender_col <span class="op">=</span> <span class="st">"Gender"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Step 1: checking variable labels</span></span>
-<span><span class="co">#&gt; checking variable Gender</span></span>
-<span><span class="co">#&gt; renamed variable label: M -&gt; m</span></span>
-<span><span class="co">#&gt; renamed variable label: F -&gt; f</span></span>
-<span><span class="co">#&gt; renamed variable label: O -&gt; o</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Step 2: checking participant and session identifiers</span></span>
 <span><span class="co">#&gt; renamed variable: ParticipantID -&gt; participant_id</span></span>
-<span><span class="co">#&gt; renamed ids to sub-001, sub-002, sub-003 ...</span></span>
+<span><span class="co">#&gt; renamed ids to sub-1, sub-2, sub-3 ...</span></span>
 <span><span class="co">#&gt; renamed variable: Session -&gt; session</span></span>
-<span><span class="co">#&gt; renamed sessions to ses-01, ses-02 ...</span></span>
+<span><span class="co">#&gt; renamed sessions to ses-1, ses-2 ...</span></span>
 <span><span class="co">#&gt; renamed variable: Gender -&gt; gender</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Step 3: checking if all variable names are snake_case</span></span>
@@ -168,12 +164,12 @@ step.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">example_data_checked</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   participant_id gender age session response_time accuracy</span></span>
-<span><span class="co">#&gt; 1        sub-001      M  21  ses-01           350        1</span></span>
-<span><span class="co">#&gt; 2        sub-002      F  32  ses-01           400        0</span></span>
-<span><span class="co">#&gt; 3        sub-003      O  27  ses-01           375        1</span></span>
-<span><span class="co">#&gt; 4        sub-001      M  21  ses-02           415        1</span></span>
-<span><span class="co">#&gt; 5        sub-002      F  32  ses-02           372        1</span></span>
-<span><span class="co">#&gt; 6        sub-003      O  27  ses-02           401        1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1          sub-1      M  21   ses-1           350        1</span></span>
+<span><span class="co">#&gt; 2          sub-2      F  32   ses-1           400        0</span></span>
+<span><span class="co">#&gt; 3          sub-3      O  27   ses-1           375        1</span></span>
+<span><span class="co">#&gt; 4          sub-1      M  21   ses-2           415        1</span></span>
+<span><span class="co">#&gt; 5          sub-2      F  32   ses-2           372        1</span></span>
+<span><span class="co">#&gt; 6          sub-3      O  27   ses-2           401        1</span></span></code></pre></div>
 <p>If the input data is valid, you can proceed to the next steps.</p>
 </div>
 <div class="section level2">
@@ -199,12 +195,12 @@ times, accuracy, etc.).</li>
 <span><span class="co"># Create the BIDS dataset</span></span>
 <span><span class="fu"><a href="../reference/write_bids.html">write_bids</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">example_data_checked</span>, output_dir <span class="op">=</span> <span class="va">output_dir</span>, task_name <span class="op">=</span> <span class="va">task_name</span>, participant_info_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"gender"</span><span class="op">)</span>, file_suffix <span class="op">=</span> <span class="st">"beh"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Participants data saved: example_bids/participants.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-001/ses-01/sub-001_task-reaction_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-001/ses-02/sub-001_task-reaction_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-002/ses-01/sub-002_task-reaction_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-002/ses-02/sub-002_task-reaction_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-003/ses-01/sub-003_task-reaction_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-003/ses-02/sub-003_task-reaction_beh.tsv</span></span></code></pre></div>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-1/ses-1/sub-1_task-reaction_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-1/ses-2/sub-1_task-reaction_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-2/ses-1/sub-2_task-reaction_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-2/ses-2/sub-2_task-reaction_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-3/ses-1/sub-3_task-reaction_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-3/ses-2/sub-3_task-reaction_beh.tsv</span></span></code></pre></div>
 <p>You should find a directory now containing the desired files.</p>
 </div>
 <div class="section level2">
@@ -352,18 +348,24 @@ read_bids().</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_loaded</span><span class="op">$</span><span class="va">participants</span></span>
 <span><span class="co">#&gt;   participant_id age gender</span></span>
-<span><span class="co">#&gt; 1        sub-001  21      M</span></span>
-<span><span class="co">#&gt; 2        sub-002  32      F</span></span>
-<span><span class="co">#&gt; 3        sub-003  27      O</span></span></code></pre></div>
+<span><span class="co">#&gt; 1          sub-1  21      M</span></span>
+<span><span class="co">#&gt; 2          sub-2  32      F</span></span>
+<span><span class="co">#&gt; 3          sub-3  27      O</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_loaded</span><span class="op">$</span><span class="va">task_data</span></span>
-<span><span class="co">#&gt;   participant_id session response_time accuracy</span></span>
-<span><span class="co">#&gt; 1        sub-001  ses-01           350        1</span></span>
-<span><span class="co">#&gt; 2        sub-001  ses-02           415        1</span></span>
-<span><span class="co">#&gt; 3        sub-002  ses-01           400        0</span></span>
-<span><span class="co">#&gt; 4        sub-002  ses-02           372        1</span></span>
-<span><span class="co">#&gt; 5        sub-003  ses-01           375        1</span></span>
-<span><span class="co">#&gt; 6        sub-003  ses-02           401        1</span></span></code></pre></div>
+<span><span class="co">#&gt;    participant_id session response_time accuracy</span></span>
+<span><span class="co">#&gt; 1         sub-001  ses-01           350        1</span></span>
+<span><span class="co">#&gt; 2         sub-001  ses-02           415        1</span></span>
+<span><span class="co">#&gt; 3         sub-002  ses-01           400        0</span></span>
+<span><span class="co">#&gt; 4         sub-002  ses-02           372        1</span></span>
+<span><span class="co">#&gt; 5         sub-003  ses-01           375        1</span></span>
+<span><span class="co">#&gt; 6         sub-003  ses-02           401        1</span></span>
+<span><span class="co">#&gt; 7           sub-1   ses-1           350        1</span></span>
+<span><span class="co">#&gt; 8           sub-1   ses-2           415        1</span></span>
+<span><span class="co">#&gt; 9           sub-2   ses-1           400        0</span></span>
+<span><span class="co">#&gt; 10          sub-2   ses-2           372        1</span></span>
+<span><span class="co">#&gt; 11          sub-3   ses-1           375        1</span></span>
+<span><span class="co">#&gt; 12          sub-3   ses-2           401        1</span></span></code></pre></div>
 <p>We can see that it is identical to the data generated in Step 1.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -35,5 +35,7 @@ outputs warnings or errors if issues arise.
 # Example dataset
 example_data <- data.frame(ParticipantID = c(1, 2), Session = c(1, 1), Gender = c("Male", "Female"), weird_variable=c("1_2", "3_4"))
 check_input_data(data = example_data, participant_col = "ParticipantID", session_col = "Session", gender_col = "Gender", ignore_cols=c("weird_variable"))
-
+# Another example with an alphanumeric participant id
+example_data2 <- data.frame(participant_id = c("ab123", "sub-123C3"), session = c("ses-01", "ses-01"), dv_var=c(0.564, 2.123))
+check_input_data(data = example_data2)
 }

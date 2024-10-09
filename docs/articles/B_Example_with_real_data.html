@@ -73,7 +73,7 @@
                         <h4 data-toc-skip class="author">Dr. Xaver
 Fuchs</h4>
             
-            <h4 data-toc-skip class="date">October 04, 2024</h4>
+            <h4 data-toc-skip class="date">October 09, 2024</h4>
       
       
       <div class="d-none name"><code>B_Example_with_real_data.Rmd</code></div>
@@ -205,7 +205,6 @@ runs.</p>
 <span>                                  gender_col <span class="op">=</span> <span class="st">"Sex"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Step 1: checking variable labels</span></span>
-<span><span class="co">#&gt; checking variable Sex</span></span>
 <span><span class="co">#&gt; checking variable Arm_top</span></span>
 <span><span class="co">#&gt; renamed variable label: right arm on top -&gt; right_arm_on_top</span></span>
 <span><span class="co">#&gt; renamed variable label: left arm on top -&gt; left_arm_on_top</span></span>
@@ -219,8 +218,8 @@ runs.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Step 2: checking participant and session identifiers</span></span>
 <span><span class="co">#&gt; renamed variable: Participant -&gt; participant_id</span></span>
-<span><span class="co">#&gt; renamed ids to sub-008, sub-009, sub-010, sub-011, sub-012, sub-013 ...</span></span>
-<span><span class="co">#&gt; renamed sessions to ses-01 ...</span></span>
+<span><span class="co">#&gt; renamed ids to sub-8, sub-9, sub-10, sub-11, sub-12, sub-13 ...</span></span>
+<span><span class="co">#&gt; renamed sessions to ses-1 ...</span></span>
 <span><span class="co">#&gt; renamed variable: Sex -&gt; gender</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Step 3: checking if all variable names are snake_case</span></span>
@@ -245,10 +244,10 @@ runs.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">B006Data_bids</span><span class="op">)</span></span>
 <span><span class="co">#&gt; tibble [32,455 × 19] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ participant_id  : chr [1:32455] "sub-008" "sub-008" "sub-008" "sub-008" ...</span></span>
+<span><span class="co">#&gt;  $ participant_id  : chr [1:32455] "sub-8" "sub-8" "sub-8" "sub-8" ...</span></span>
 <span><span class="co">#&gt;  $ age             : int [1:32455] 22 22 22 22 22 22 22 22 22 22 ...</span></span>
 <span><span class="co">#&gt;  $ gender          : Factor w/ 2 levels "f","m": 1 1 1 1 1 1 1 1 1 1 ...</span></span>
-<span><span class="co">#&gt;  $ arm_top         : chr [1:32455] "right arm on top" "right arm on top" "right arm on top" "right arm on top" ...</span></span>
+<span><span class="co">#&gt;  $ arm_top         : chr [1:32455] "right_arm_on_top" "right_arm_on_top" "right_arm_on_top" "right_arm_on_top" ...</span></span>
 <span><span class="co">#&gt;  $ length_lower_arm: int [1:32455] 21 21 21 21 21 21 21 21 21 21 ...</span></span>
 <span><span class="co">#&gt;  $ run             : num [1:32455] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ trial_in_run    : int [1:32455] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
@@ -262,7 +261,7 @@ runs.</p>
 <span><span class="co">#&gt;  $ tactor2segment  : Factor w/ 2 levels "lower","upper": 1 1 1 2 2 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ response_correct: num [1:32455] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ rt              : num [1:32455] 1365 844 536 855 1037 ...</span></span>
-<span><span class="co">#&gt;  $ session         : chr [1:32455] "ses-01" "ses-01" "ses-01" "ses-01" ...</span></span>
+<span><span class="co">#&gt;  $ session         : chr [1:32455] "ses-1" "ses-1" "ses-1" "ses-1" ...</span></span>
 <span><span class="co">#&gt;  $ trial           : int [1:32455] 1 2 3 4 5 6 7 8 9 10 ...</span></span></code></pre></div>
 <p>That looks good. Some variables are coded as factors but it should
 not matter because when writing to a tsv file, the labels will be
@@ -288,27 +287,27 @@ participants.tsv</p>
 <span>           participant_info_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"gender"</span>, <span class="st">"arm_top"</span>, <span class="st">"length_lower_arm"</span><span class="op">)</span>, </span>
 <span>           file_suffix <span class="op">=</span> <span class="st">"beh"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Participants data saved: example_bids2/participants.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-008/ses-01/sub-008_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-009/ses-01/sub-009_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-010/ses-01/sub-010_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-011/ses-01/sub-011_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-012/ses-01/sub-012_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-013/ses-01/sub-013_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-014/ses-01/sub-014_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-015/ses-01/sub-015_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-016/ses-01/sub-016_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-017/ses-01/sub-017_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-018/ses-01/sub-018_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-019/ses-01/sub-019_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-020/ses-01/sub-020_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-021/ses-01/sub-021_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-022/ses-01/sub-022_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-023/ses-01/sub-023_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-024/ses-01/sub-024_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-025/ses-01/sub-025_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-026/ses-01/sub-026_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-027/ses-01/sub-027_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-028/ses-01/sub-028_task-LID_beh.tsv</span></span></code></pre></div>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-8/ses-1/sub-8_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-9/ses-1/sub-9_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-10/ses-1/sub-10_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-11/ses-1/sub-11_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-12/ses-1/sub-12_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-13/ses-1/sub-13_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-14/ses-1/sub-14_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-15/ses-1/sub-15_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-16/ses-1/sub-16_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-17/ses-1/sub-17_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-18/ses-1/sub-18_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-19/ses-1/sub-19_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-20/ses-1/sub-20_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-21/ses-1/sub-21_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-22/ses-1/sub-22_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-23/ses-1/sub-23_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-24/ses-1/sub-24_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-25/ses-1/sub-25_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-26/ses-1/sub-26_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-27/ses-1/sub-27_task-LID_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-28/ses-1/sub-28_task-LID_beh.tsv</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="step-4-define-and-write-json-metadata">Step 4: Define and Write JSON Metadata<a class="anchor" aria-label="anchor" href="#step-4-define-and-write-json-metadata"></a>
@@ -449,27 +448,27 @@ read_bids().</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_loaded</span><span class="op">$</span><span class="va">participants</span></span>
 <span><span class="co">#&gt;    participant_id age gender          arm_top length_lower_arm</span></span>
-<span><span class="co">#&gt; 1         sub-008  22      f right arm on top               21</span></span>
-<span><span class="co">#&gt; 2         sub-009  21      f  left arm on top               24</span></span>
-<span><span class="co">#&gt; 3         sub-010  21      f  left arm on top               19</span></span>
-<span><span class="co">#&gt; 4         sub-011  23      m  left arm on top               33</span></span>
-<span><span class="co">#&gt; 5         sub-012  19      f  left arm on top               30</span></span>
-<span><span class="co">#&gt; 6         sub-013  24      m  left arm on top               27</span></span>
-<span><span class="co">#&gt; 7         sub-014  31      m  left arm on top               26</span></span>
-<span><span class="co">#&gt; 8         sub-015  23      m right arm on top               23</span></span>
-<span><span class="co">#&gt; 9         sub-016  21      f  left arm on top               21</span></span>
-<span><span class="co">#&gt; 10        sub-017  21      f right arm on top               21</span></span>
-<span><span class="co">#&gt; 11        sub-018  20      f  left arm on top               25</span></span>
-<span><span class="co">#&gt; 12        sub-019  29      m right arm on top               27</span></span>
-<span><span class="co">#&gt; 13        sub-020  25      f  left arm on top               22</span></span>
-<span><span class="co">#&gt; 14        sub-021  22      f right arm on top               23</span></span>
-<span><span class="co">#&gt; 15        sub-022  27      m right arm on top               27</span></span>
-<span><span class="co">#&gt; 16        sub-023  23      m right arm on top               26</span></span>
-<span><span class="co">#&gt; 17        sub-024  23      m right arm on top               25</span></span>
-<span><span class="co">#&gt; 18        sub-025  21      m right arm on top               27</span></span>
-<span><span class="co">#&gt; 19        sub-026  20      f right arm on top               21</span></span>
-<span><span class="co">#&gt; 20        sub-027  19      f right arm on top               20</span></span>
-<span><span class="co">#&gt; 21        sub-028  29      m  left arm on top               22</span></span></code></pre></div>
+<span><span class="co">#&gt; 1           sub-8  22      f right_arm_on_top               21</span></span>
+<span><span class="co">#&gt; 2           sub-9  21      f  left_arm_on_top               24</span></span>
+<span><span class="co">#&gt; 3          sub-10  21      f  left_arm_on_top               19</span></span>
+<span><span class="co">#&gt; 4          sub-11  23      m  left_arm_on_top               33</span></span>
+<span><span class="co">#&gt; 5          sub-12  19      f  left_arm_on_top               30</span></span>
+<span><span class="co">#&gt; 6          sub-13  24      m  left_arm_on_top               27</span></span>
+<span><span class="co">#&gt; 7          sub-14  31      m  left_arm_on_top               26</span></span>
+<span><span class="co">#&gt; 8          sub-15  23      m right_arm_on_top               23</span></span>
+<span><span class="co">#&gt; 9          sub-16  21      f  left_arm_on_top               21</span></span>
+<span><span class="co">#&gt; 10         sub-17  21      f right_arm_on_top               21</span></span>
+<span><span class="co">#&gt; 11         sub-18  20      f  left_arm_on_top               25</span></span>
+<span><span class="co">#&gt; 12         sub-19  29      m right_arm_on_top               27</span></span>
+<span><span class="co">#&gt; 13         sub-20  25      f  left_arm_on_top               22</span></span>
+<span><span class="co">#&gt; 14         sub-21  22      f right_arm_on_top               23</span></span>
+<span><span class="co">#&gt; 15         sub-22  27      m right_arm_on_top               27</span></span>
+<span><span class="co">#&gt; 16         sub-23  23      m right_arm_on_top               26</span></span>
+<span><span class="co">#&gt; 17         sub-24  23      m right_arm_on_top               25</span></span>
+<span><span class="co">#&gt; 18         sub-25  21      m right_arm_on_top               27</span></span>
+<span><span class="co">#&gt; 19         sub-26  20      f right_arm_on_top               21</span></span>
+<span><span class="co">#&gt; 20         sub-27  19      f right_arm_on_top               20</span></span>
+<span><span class="co">#&gt; 21         sub-28  29      m  left_arm_on_top               22</span></span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_loaded</span><span class="op">$</span><span class="va">task_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   participant_id run trial_in_run posture stim_side stim_segment soa</span></span>

@@ -1,22 +1,22 @@
 participant_id	age	gender	arm_top	length_lower_arm
-sub-008	22	f	right arm on top	21
-sub-009	21	f	left arm on top	24
-sub-010	21	f	left arm on top	19
-sub-011	23	m	left arm on top	33
-sub-012	19	f	left arm on top	30
-sub-013	24	m	left arm on top	27
-sub-014	31	m	left arm on top	26
-sub-015	23	m	right arm on top	23
-sub-016	21	f	left arm on top	21
-sub-017	21	f	right arm on top	21
-sub-018	20	f	left arm on top	25
-sub-019	29	m	right arm on top	27
-sub-020	25	f	left arm on top	22
-sub-021	22	f	right arm on top	23
-sub-022	27	m	right arm on top	27
-sub-023	23	m	right arm on top	26
-sub-024	23	m	right arm on top	25
-sub-025	21	m	right arm on top	27
-sub-026	20	f	right arm on top	21
-sub-027	19	f	right arm on top	20
-sub-028	29	m	left arm on top	22
+sub-8	22	f	right_arm_on_top	21
+sub-9	21	f	left_arm_on_top	24
+sub-10	21	f	left_arm_on_top	19
+sub-11	23	m	left_arm_on_top	33
+sub-12	19	f	left_arm_on_top	30
+sub-13	24	m	left_arm_on_top	27
+sub-14	31	m	left_arm_on_top	26
+sub-15	23	m	right_arm_on_top	23
+sub-16	21	f	left_arm_on_top	21
+sub-17	21	f	right_arm_on_top	21
+sub-18	20	f	left_arm_on_top	25
+sub-19	29	m	right_arm_on_top	27
+sub-20	25	f	left_arm_on_top	22
+sub-21	22	f	right_arm_on_top	23
+sub-22	27	m	right_arm_on_top	27
+sub-23	23	m	right_arm_on_top	26
+sub-24	23	m	right_arm_on_top	25
+sub-25	21	m	right_arm_on_top	27
+sub-26	20	f	right_arm_on_top	21
+sub-27	19	f	right_arm_on_top	20
+sub-28	29	m	left_arm_on_top	22
