@@ -2,16 +2,26 @@
 % Please edit documentation in R/read_bids.R
 \name{read_bids}
 \alias{read_bids}
-\title{Read BIDS-formatted data}
+\title{Read BIDS-formatted (behavioral) data}
 \usage{
-read_bids(bids_dir, task_name, file_suffix = "beh")
+read_bids(
+  bids_dir,
+  data_type = "beh",
+  filename_variables = c("sub-", "ses-"),
+  variable_names = c("participant", "session"),
+  strip_prefixes = F
+)
 }
 \arguments{
-\item{bids_dir}{The root directory of the BIDS dataset.}
+\item{bids_dir}{The root directory of the BIDS data set.}
 
-\item{task_name}{The name of the task (e.g., "reaction").}
+\item{data_type}{A string defining the data_type for the task files. In BIDS it is usually "events" or "beh" (the default) for "behavior".}
 
-\item{file_suffix}{The suffix of the task files (e.g., "beh", "events"). Default is "beh".}
+\item{filename_variables}{A character string defining the variables that are contained in the data file name and that should then appear as columns in the data. Default is c("sub-", "ses-") assuming that the file name will at least contain the participant code and the session.}
+
+\item{variable_names}{A character string defining how the variables defined in 'filename_variables' should be called in the data Default is c("participant", "session").}
+
+\item{strip_prefixes}{Defines whether or not prefixes like "sub-" should be stripped or maintained. Default is FALSE which would maintain the prefixes.}
 }
 \value{
 A list containing the participant data and the task data.
@@ -21,12 +31,15 @@ This function searches the BIDS directory for all task-related \code{.tsv} files
 It handles cases where session folders are present as well as cases where there are no session folders.
 }
 \examples{
-data <- data.frame(participant_id = c(1, 1, 2, 2),
-                   session = c(1, 2, 1, 2),
+data <- data.frame(participant_id = c("sub-1", "sub-1", "sub-2", "sub-2"),
+                   session = c("ses-1", "ses-2", "ses-1", "ses-2"),
+                   run = c("run-1", "run-1", "run-1", "run-1"),
                    age = c(25, 25, 30, 30),
-                   gender = c('m', 'm', 'f', 'f'),
+                   sex = c('m', 'm', 'f', 'f'),
                    response_time = c(100, 200, 150, 180))
-write_bids(data, output_dir = "bids_dir", task_name = "RTTask", participant_info_cols = c("age", "gender"))
-read_bids(bids_dir = "bids_dir", task_name = "RTTask")
 
+write_task_tsv(data, bids_dir = "BIDS", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
+               filename_variables = c("participant_id", "session", "RTTask"="task", "run"), ignore_variables =  c("age", "sex"))
+write_participants_tsv(data, bids_dir = "BIDS", include_variables = c("participant_id", "age", "sex"))
+read_bids(bids_dir = "BIDS")
 }

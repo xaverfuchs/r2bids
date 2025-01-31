@@ -8,7 +8,7 @@ check_input_data(
   data,
   participant_col = "participant_id",
   session_col = "session",
-  gender_col = NULL,
+  sex_col = NULL,
   ignore_cols = NULL
 )
 }
@@ -19,7 +19,7 @@ check_input_data(
 
 \item{session_col}{Name of the column containing session IDs (default is "session").}
 
-\item{gender_col}{Name of the column containing gender information, if any (default is NULL, assuming there is no gender column).}
+\item{sex_col}{Name of the column containing sex information, if any (default is NULL, assuming there is no sex column).}
 
 \item{ignore_cols}{Character vector with variable names to ignore. Sometimes the function will not rename the data in a desirable way (for example when special characters DO have a meaning in a factor). In this case you can ignore variables and rename/recode them manually instead.}
 }
@@ -28,13 +28,13 @@ A validated and possibly modified data frame with the appropriate formatting.
 }
 \description{
 This function checks that certain requirements are met by the dataset, including variable names in snake_case,
-valid participant IDs, and session description. The function can optionally also check for proper gender encoding ("m", "f", or "o"). It attempts to convert invalid data and
+valid participant IDs, and session description. The function can optionally also check for proper sex encoding ("m", "f", or "o"). It attempts to convert invalid data and
 outputs warnings or errors if issues arise.
 }
 \examples{
 # Example dataset
-example_data <- data.frame(ParticipantID = c(1, 2), Session = c(1, 1), Gender = c("Male", "Female"), weird_variable=c("1_2", "3_4"))
-check_input_data(data = example_data, participant_col = "ParticipantID", session_col = "Session", gender_col = "Gender", ignore_cols=c("weird_variable"))
+example_data <- data.frame(ParticipantID = c(1, 2), Session = c(1, 1), sex = c("Male", "Female"), weird_variable=c("1_2", "3_4"))
+check_input_data(data = example_data, participant_col = "ParticipantID", session_col = "Session", sex_col = "sex", ignore_cols=c("weird_variable"))
 # Another example with an alphanumeric participant id
 example_data2 <- data.frame(participant_id = c("ab123", "sub-123C3"), session = c("ses-01", "ses-01"), dv_var=c(0.564, 2.123))
 check_input_data(data = example_data2)

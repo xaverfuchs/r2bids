@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">r2bids</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@
                         <h4 data-toc-skip class="author">Dr. Xaver
 Fuchs</h4>
             
-            <h4 data-toc-skip class="date">October 09, 2024</h4>
+            <h4 data-toc-skip class="date">January 31, 2025</h4>
       
       
       <div class="d-none name"><code>B_Example_with_real_data.Rmd</code></div>
@@ -200,11 +200,13 @@ runs.</p>
 <h3 id="validate-the-data-set">Validate the Data Set<a class="anchor" aria-label="anchor" href="#validate-the-data-set"></a>
 </h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">B006Data_bids</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/check_input_data.html">check_input_data</a></span><span class="op">(</span><span class="va">B006Data_bids</span>, participant_col <span class="op">=</span> <span class="st">"Participant"</span>, </span>
+<code class="sourceCode R"><span><span class="va">B006Data_bids</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/check_input_data.html">check_input_data</a></span><span class="op">(</span><span class="va">B006Data_bids</span>, </span>
+<span>                                  participant_col <span class="op">=</span> <span class="st">"Participant"</span>, </span>
 <span>                                  session_col <span class="op">=</span> <span class="st">"session"</span>, </span>
-<span>                                  gender_col <span class="op">=</span> <span class="st">"Sex"</span><span class="op">)</span></span>
+<span>                                  sex_col <span class="op">=</span> <span class="st">"Sex"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Step 1: checking variable labels</span></span>
+<span><span class="co">#&gt; checking variable Sex</span></span>
 <span><span class="co">#&gt; checking variable Arm_top</span></span>
 <span><span class="co">#&gt; renamed variable label: right arm on top -&gt; right_arm_on_top</span></span>
 <span><span class="co">#&gt; renamed variable label: left arm on top -&gt; left_arm_on_top</span></span>
@@ -220,7 +222,7 @@ runs.</p>
 <span><span class="co">#&gt; renamed variable: Participant -&gt; participant_id</span></span>
 <span><span class="co">#&gt; renamed ids to sub-8, sub-9, sub-10, sub-11, sub-12, sub-13 ...</span></span>
 <span><span class="co">#&gt; renamed sessions to ses-1 ...</span></span>
-<span><span class="co">#&gt; renamed variable: Sex -&gt; gender</span></span>
+<span><span class="co">#&gt; renamed variable: Sex -&gt; sex</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Step 3: checking if all variable names are snake_case</span></span>
 <span><span class="co">#&gt; renamed variable: Age -&gt; age</span></span>
@@ -239,30 +241,30 @@ runs.</p>
 <span><span class="co">#&gt; renamed variable: RT -&gt; rt</span></span>
 <span><span class="co">#&gt; renamed variable: Trial -&gt; trial</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Step 4: checking correct coding of gender variable</span></span></code></pre></div>
+<span><span class="co">#&gt; Step 4: checking correct coding of sex variable</span></span></code></pre></div>
 <p>Now we check the data set</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">B006Data_bids</span><span class="op">)</span></span>
-<span><span class="co">#&gt; tibble [32,455 × 19] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ participant_id  : chr [1:32455] "sub-8" "sub-8" "sub-8" "sub-8" ...</span></span>
-<span><span class="co">#&gt;  $ age             : int [1:32455] 22 22 22 22 22 22 22 22 22 22 ...</span></span>
-<span><span class="co">#&gt;  $ gender          : Factor w/ 2 levels "f","m": 1 1 1 1 1 1 1 1 1 1 ...</span></span>
-<span><span class="co">#&gt;  $ arm_top         : chr [1:32455] "right_arm_on_top" "right_arm_on_top" "right_arm_on_top" "right_arm_on_top" ...</span></span>
-<span><span class="co">#&gt;  $ length_lower_arm: int [1:32455] 21 21 21 21 21 21 21 21 21 21 ...</span></span>
-<span><span class="co">#&gt;  $ run             : num [1:32455] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
-<span><span class="co">#&gt;  $ trial_in_run    : int [1:32455] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#&gt;  $ posture         : chr [1:32455] "crossed" "crossed" "crossed" "crossed" ...</span></span>
-<span><span class="co">#&gt;  $ stim_side       : chr [1:32455] "different" "different" "different" "same" ...</span></span>
-<span><span class="co">#&gt;  $ stim_segment    : chr [1:32455] "different" "different" "different" "different" ...</span></span>
-<span><span class="co">#&gt;  $ soa             : int [1:32455] 50 300 100 100 800 800 300 800 50 50 ...</span></span>
+<span><span class="co">#&gt; 'data.frame':    32455 obs. of  19 variables:</span></span>
+<span><span class="co">#&gt;  $ participant_id  : chr  "sub-8" "sub-8" "sub-8" "sub-8" ...</span></span>
+<span><span class="co">#&gt;  $ age             : int  22 22 22 22 22 22 22 22 22 22 ...</span></span>
+<span><span class="co">#&gt;  $ sex             : Factor w/ 2 levels "f","m": 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ arm_top         : chr  "right_arm_on_top" "right_arm_on_top" "right_arm_on_top" "right_arm_on_top" ...</span></span>
+<span><span class="co">#&gt;  $ length_lower_arm: int  21 21 21 21 21 21 21 21 21 21 ...</span></span>
+<span><span class="co">#&gt;  $ run             : num  1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ trial_in_run    : int  1 2 3 4 5 6 7 8 9 10 ...</span></span>
+<span><span class="co">#&gt;  $ posture         : chr  "crossed" "crossed" "crossed" "crossed" ...</span></span>
+<span><span class="co">#&gt;  $ stim_side       : chr  "different" "different" "different" "same" ...</span></span>
+<span><span class="co">#&gt;  $ stim_segment    : chr  "different" "different" "different" "different" ...</span></span>
+<span><span class="co">#&gt;  $ soa             : int  50 300 100 100 800 800 300 800 50 50 ...</span></span>
 <span><span class="co">#&gt;  $ tactor1side     : Factor w/ 2 levels "left","right": 1 1 1 2 2 1 1 2 2 1 ...</span></span>
 <span><span class="co">#&gt;  $ tactor1segment  : Factor w/ 2 levels "lower","upper": 2 2 2 1 1 2 1 2 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ tactor2side     : Factor w/ 2 levels "left","right": 2 2 2 2 2 2 2 1 2 2 ...</span></span>
 <span><span class="co">#&gt;  $ tactor2segment  : Factor w/ 2 levels "lower","upper": 1 1 1 2 2 1 1 1 1 1 ...</span></span>
-<span><span class="co">#&gt;  $ response_correct: num [1:32455] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
-<span><span class="co">#&gt;  $ rt              : num [1:32455] 1365 844 536 855 1037 ...</span></span>
-<span><span class="co">#&gt;  $ session         : chr [1:32455] "ses-1" "ses-1" "ses-1" "ses-1" ...</span></span>
-<span><span class="co">#&gt;  $ trial           : int [1:32455] 1 2 3 4 5 6 7 8 9 10 ...</span></span></code></pre></div>
+<span><span class="co">#&gt;  $ response_correct: num  1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ rt              : num  1365 844 536 855 1037 ...</span></span>
+<span><span class="co">#&gt;  $ session         : chr  "ses-1" "ses-1" "ses-1" "ses-1" ...</span></span>
+<span><span class="co">#&gt;  $ trial           : int  1 2 3 4 5 6 7 8 9 10 ...</span></span></code></pre></div>
 <p>That looks good. Some variables are coded as factors but it should
 not matter because when writing to a tsv file, the labels will be
 used.</p>
@@ -278,36 +280,66 @@ participants.tsv</p>
 <code class="sourceCode R"><span><span class="co"># Output directory </span></span>
 <span><span class="va">output_dir</span> <span class="op">&lt;-</span> <span class="st">"example_bids2"</span></span>
 <span></span>
-<span><span class="co"># Task name for BIDS</span></span>
-<span><span class="va">task_name</span> <span class="op">&lt;-</span> <span class="st">"LID"</span></span>
-<span></span>
 <span><span class="co"># Create the BIDS dataset</span></span>
-<span><span class="fu"><a href="../reference/write_bids.html">write_bids</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">B006Data_bids</span>, output_dir <span class="op">=</span> <span class="va">output_dir</span>, </span>
-<span>           task_name <span class="op">=</span> <span class="va">task_name</span>, </span>
-<span>           participant_info_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"gender"</span>, <span class="st">"arm_top"</span>, <span class="st">"length_lower_arm"</span><span class="op">)</span>, </span>
-<span>           file_suffix <span class="op">=</span> <span class="st">"beh"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Participants data saved: example_bids2/participants.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-8/ses-1/sub-8_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-9/ses-1/sub-9_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-10/ses-1/sub-10_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-11/ses-1/sub-11_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-12/ses-1/sub-12_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-13/ses-1/sub-13_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-14/ses-1/sub-14_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-15/ses-1/sub-15_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-16/ses-1/sub-16_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-17/ses-1/sub-17_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-18/ses-1/sub-18_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-19/ses-1/sub-19_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-20/ses-1/sub-20_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-21/ses-1/sub-21_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-22/ses-1/sub-22_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-23/ses-1/sub-23_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-24/ses-1/sub-24_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-25/ses-1/sub-25_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-26/ses-1/sub-26_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-27/ses-1/sub-27_task-LID_beh.tsv</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids2/sub-28/ses-1/sub-28_task-LID_beh.tsv</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/write_task_tsv.html">write_task_tsv</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">B006Data_bids</span>, </span>
+<span>               bids_dir <span class="op">=</span> <span class="va">output_dir</span>, data_type <span class="op">=</span> <span class="st">"beh"</span>, </span>
+<span>               filename_prefixes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-"</span>, <span class="st">"ses-"</span>, <span class="st">"task-"</span>, <span class="st">"run-"</span><span class="op">)</span>,</span>
+<span>               filename_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"session"</span>, <span class="st">"LID"</span><span class="op">=</span><span class="st">"task"</span>, <span class="st">"run"</span><span class="op">)</span>,</span>
+<span>               path_prefixes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-"</span>, <span class="st">"ses-"</span><span class="op">)</span>,</span>
+<span>               path_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"session"</span><span class="op">)</span>,</span>
+<span>               ignore_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"sex"</span>, <span class="st">"arm_top"</span>, <span class="st">"length_lower_arm"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Variable task does not exist in the data and will be imputed as LID</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-8/ses-1/sub-8_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-8/ses-1/sub-8_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-9/ses-1/sub-9_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-9/ses-1/sub-9_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-10/ses-1/sub-10_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-10/ses-1/sub-10_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-11/ses-1/sub-11_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-11/ses-1/sub-11_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-12/ses-1/sub-12_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-12/ses-1/sub-12_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-13/ses-1/sub-13_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-13/ses-1/sub-13_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-14/ses-1/sub-14_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-14/ses-1/sub-14_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-15/ses-1/sub-15_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-15/ses-1/sub-15_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-16/ses-1/sub-16_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-16/ses-1/sub-16_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-17/ses-1/sub-17_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-17/ses-1/sub-17_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-18/ses-1/sub-18_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-18/ses-1/sub-18_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-19/ses-1/sub-19_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-19/ses-1/sub-19_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-20/ses-1/sub-20_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-20/ses-1/sub-20_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-21/ses-1/sub-21_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-21/ses-1/sub-21_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-22/ses-1/sub-22_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-22/ses-1/sub-22_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-23/ses-1/sub-23_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-23/ses-1/sub-23_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-24/ses-1/sub-24_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-24/ses-1/sub-24_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-25/ses-1/sub-25_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-25/ses-1/sub-25_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-26/ses-1/sub-26_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-26/ses-1/sub-26_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-27/ses-1/sub-27_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-27/ses-1/sub-27_ses-1_task-LID_run-2_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-28/ses-1/sub-28_ses-1_task-LID_run-1_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids2/sub-28/ses-1/sub-28_ses-1_task-LID_run-2_beh.tsv</span></span></code></pre></div>
+<p>Now we will write the participants.tsv</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/write_participants_tsv.html">write_participants_tsv</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">B006Data_bids</span>, bids_dir <span class="op">=</span> <span class="va">output_dir</span>,</span>
+<span>                       include_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, </span>
+<span>                                             <span class="st">"age"</span>, </span>
+<span>                                             <span class="st">"sex"</span>, </span>
+<span>                                             <span class="st">"arm_top"</span>, </span>
+<span>                                             <span class="st">"length_lower_arm"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Participants data saved: example_bids2/participants.tsv</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="step-4-define-and-write-json-metadata">Step 4: Define and Write JSON Metadata<a class="anchor" aria-label="anchor" href="#step-4-define-and-write-json-metadata"></a>
@@ -318,7 +350,7 @@ contained in the tsv files).</p>
 <p>The metadata is a nested list where each element describes a specific
 column in the dataset. The nested lists descrbibe keys belonging to that
 variable.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Metadata with nested lists for each variable</span></span>
 <span><span class="va">meta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  participant_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -431,8 +463,11 @@ variable.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Now the JSON file will be added to the directory.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/write_metadata.html">write_metadata</a></span><span class="op">(</span>output_dir <span class="op">=</span> <span class="va">output_dir</span>, task_name <span class="op">=</span> <span class="va">task_name</span>, meta_data <span class="op">=</span> <span class="va">meta_data</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/write_metadata.html">write_metadata</a></span><span class="op">(</span>bids_dir <span class="op">=</span> <span class="va">output_dir</span>, </span>
+<span>               task_name <span class="op">=</span> <span class="st">"LID"</span>, </span>
+<span>               data_type <span class="op">=</span> <span class="st">"beh"</span>,</span>
+<span>               meta_data <span class="op">=</span> <span class="va">meta_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Metadata JSON saved: example_bids2/task-LID_beh.json</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -440,58 +475,63 @@ variable.</p>
 </h2>
 <p>Once the files are created, you can laod them again with the function
 read_bids().</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data_loaded</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_bids.html">read_bids</a></span><span class="op">(</span>bids_dir <span class="op">=</span> <span class="st">"example_bids2"</span>, task_name <span class="op">=</span> <span class="va">task_name</span>, file_suffix <span class="op">=</span> <span class="st">"beh"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Participants data loaded from: example_bids2/participants.tsv</span></span>
-<span><span class="co">#&gt; Task data loaded from all task files.</span></span></code></pre></div>
-<p>The output is a list with the participant data and the task data.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data_loaded</span><span class="op">$</span><span class="va">participants</span></span>
-<span><span class="co">#&gt;    participant_id age gender          arm_top length_lower_arm</span></span>
-<span><span class="co">#&gt; 1           sub-8  22      f right_arm_on_top               21</span></span>
-<span><span class="co">#&gt; 2           sub-9  21      f  left_arm_on_top               24</span></span>
-<span><span class="co">#&gt; 3          sub-10  21      f  left_arm_on_top               19</span></span>
-<span><span class="co">#&gt; 4          sub-11  23      m  left_arm_on_top               33</span></span>
-<span><span class="co">#&gt; 5          sub-12  19      f  left_arm_on_top               30</span></span>
-<span><span class="co">#&gt; 6          sub-13  24      m  left_arm_on_top               27</span></span>
-<span><span class="co">#&gt; 7          sub-14  31      m  left_arm_on_top               26</span></span>
-<span><span class="co">#&gt; 8          sub-15  23      m right_arm_on_top               23</span></span>
-<span><span class="co">#&gt; 9          sub-16  21      f  left_arm_on_top               21</span></span>
-<span><span class="co">#&gt; 10         sub-17  21      f right_arm_on_top               21</span></span>
-<span><span class="co">#&gt; 11         sub-18  20      f  left_arm_on_top               25</span></span>
-<span><span class="co">#&gt; 12         sub-19  29      m right_arm_on_top               27</span></span>
-<span><span class="co">#&gt; 13         sub-20  25      f  left_arm_on_top               22</span></span>
-<span><span class="co">#&gt; 14         sub-21  22      f right_arm_on_top               23</span></span>
-<span><span class="co">#&gt; 15         sub-22  27      m right_arm_on_top               27</span></span>
-<span><span class="co">#&gt; 16         sub-23  23      m right_arm_on_top               26</span></span>
-<span><span class="co">#&gt; 17         sub-24  23      m right_arm_on_top               25</span></span>
-<span><span class="co">#&gt; 18         sub-25  21      m right_arm_on_top               27</span></span>
-<span><span class="co">#&gt; 19         sub-26  20      f right_arm_on_top               21</span></span>
-<span><span class="co">#&gt; 20         sub-27  19      f right_arm_on_top               20</span></span>
-<span><span class="co">#&gt; 21         sub-28  29      m  left_arm_on_top               22</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">data_loaded</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_bids.html">read_bids</a></span><span class="op">(</span>bids_dir <span class="op">=</span> <span class="st">"example_bids2"</span>, </span>
+<span>                         data_type <span class="op">=</span> <span class="st">"beh"</span>, </span>
+<span>                         filename_prefixes <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-"</span>, <span class="st">"ses-"</span>, </span>
+<span>                                                <span class="st">"task-"</span>, <span class="st">"run-"</span><span class="op">)</span>, </span>
+<span>                         filename_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, </span>
+<span>                                                <span class="st">"session"</span>, <span class="st">"task"</span>, <span class="st">"run"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Task data loaded from all task files.</span></span>
+<span><span class="co">#&gt; Participants data loaded from: example_bids2/participants.tsv</span></span></code></pre></div>
+<p>The output is a list with the participant data and the task data.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_loaded</span><span class="op">$</span><span class="va">participants</span></span>
+<span><span class="co">#&gt;    participant_id age sex          arm_top length_lower_arm</span></span>
+<span><span class="co">#&gt; 1           sub-8  22   f right_arm_on_top               21</span></span>
+<span><span class="co">#&gt; 2           sub-9  21   f  left_arm_on_top               24</span></span>
+<span><span class="co">#&gt; 3          sub-10  21   f  left_arm_on_top               19</span></span>
+<span><span class="co">#&gt; 4          sub-11  23   m  left_arm_on_top               33</span></span>
+<span><span class="co">#&gt; 5          sub-12  19   f  left_arm_on_top               30</span></span>
+<span><span class="co">#&gt; 6          sub-13  24   m  left_arm_on_top               27</span></span>
+<span><span class="co">#&gt; 7          sub-14  31   m  left_arm_on_top               26</span></span>
+<span><span class="co">#&gt; 8          sub-15  23   m right_arm_on_top               23</span></span>
+<span><span class="co">#&gt; 9          sub-16  21   f  left_arm_on_top               21</span></span>
+<span><span class="co">#&gt; 10         sub-17  21   f right_arm_on_top               21</span></span>
+<span><span class="co">#&gt; 11         sub-18  20   f  left_arm_on_top               25</span></span>
+<span><span class="co">#&gt; 12         sub-19  29   m right_arm_on_top               27</span></span>
+<span><span class="co">#&gt; 13         sub-20  25   f  left_arm_on_top               22</span></span>
+<span><span class="co">#&gt; 14         sub-21  22   f right_arm_on_top               23</span></span>
+<span><span class="co">#&gt; 15         sub-22  27   m right_arm_on_top               27</span></span>
+<span><span class="co">#&gt; 16         sub-23  23   m right_arm_on_top               26</span></span>
+<span><span class="co">#&gt; 17         sub-24  23   m right_arm_on_top               25</span></span>
+<span><span class="co">#&gt; 18         sub-25  21   m right_arm_on_top               27</span></span>
+<span><span class="co">#&gt; 19         sub-26  20   f right_arm_on_top               21</span></span>
+<span><span class="co">#&gt; 20         sub-27  19   f right_arm_on_top               20</span></span>
+<span><span class="co">#&gt; 21         sub-28  29   m  left_arm_on_top               22</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_loaded</span><span class="op">$</span><span class="va">task_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   participant_id run trial_in_run posture stim_side stim_segment soa</span></span>
-<span><span class="co">#&gt; 1        sub-008   1            1 crossed different    different  50</span></span>
-<span><span class="co">#&gt; 2        sub-008   1            2 crossed different    different 300</span></span>
-<span><span class="co">#&gt; 3        sub-008   1            3 crossed different    different 100</span></span>
-<span><span class="co">#&gt; 4        sub-008   1            4 crossed      same    different 100</span></span>
-<span><span class="co">#&gt; 5        sub-008   1            5 crossed      same    different 800</span></span>
-<span><span class="co">#&gt; 6        sub-008   1            6 crossed different    different 800</span></span>
-<span><span class="co">#&gt;   tactor1side tactor1segment tactor2side tactor2segment response_correct   rt</span></span>
-<span><span class="co">#&gt; 1        left          upper       right          lower                1 1365</span></span>
-<span><span class="co">#&gt; 2        left          upper       right          lower                1  844</span></span>
-<span><span class="co">#&gt; 3        left          upper       right          lower                1  536</span></span>
-<span><span class="co">#&gt; 4       right          lower       right          upper                1  855</span></span>
-<span><span class="co">#&gt; 5       right          lower       right          upper                1 1037</span></span>
-<span><span class="co">#&gt; 6        left          upper       right          lower                1  897</span></span>
-<span><span class="co">#&gt;   session trial</span></span>
-<span><span class="co">#&gt; 1  ses-01     1</span></span>
-<span><span class="co">#&gt; 2  ses-01     2</span></span>
-<span><span class="co">#&gt; 3  ses-01     3</span></span>
-<span><span class="co">#&gt; 4  ses-01     4</span></span>
-<span><span class="co">#&gt; 5  ses-01     5</span></span>
-<span><span class="co">#&gt; 6  ses-01     6</span></span></code></pre></div>
+<span><span class="co">#&gt;   participant_id session     task   run trial_in_run posture stim_side</span></span>
+<span><span class="co">#&gt; 1         sub-10   ses-1 task-LID run-1            1 crossed      same</span></span>
+<span><span class="co">#&gt; 2         sub-10   ses-1 task-LID run-1            2 crossed different</span></span>
+<span><span class="co">#&gt; 3         sub-10   ses-1 task-LID run-1            3 crossed      same</span></span>
+<span><span class="co">#&gt; 4         sub-10   ses-1 task-LID run-1            4 crossed      same</span></span>
+<span><span class="co">#&gt; 5         sub-10   ses-1 task-LID run-1            5 crossed      same</span></span>
+<span><span class="co">#&gt; 6         sub-10   ses-1 task-LID run-1            6 crossed      same</span></span>
+<span><span class="co">#&gt;   stim_segment soa tactor1side tactor1segment tactor2side tactor2segment</span></span>
+<span><span class="co">#&gt; 1    different  50        left          upper        left          lower</span></span>
+<span><span class="co">#&gt; 2    different 300       right          lower        left          upper</span></span>
+<span><span class="co">#&gt; 3         same  50        left          lower        left          lower</span></span>
+<span><span class="co">#&gt; 4         same  50       right          lower       right          lower</span></span>
+<span><span class="co">#&gt; 5    different 800        left          lower        left          upper</span></span>
+<span><span class="co">#&gt; 6         same 100       right          lower       right          lower</span></span>
+<span><span class="co">#&gt;   response_correct   rt trial</span></span>
+<span><span class="co">#&gt; 1                1 1460     1</span></span>
+<span><span class="co">#&gt; 2                1 1081     2</span></span>
+<span><span class="co">#&gt; 3                1 1163     3</span></span>
+<span><span class="co">#&gt; 4                1 1428     4</span></span>
+<span><span class="co">#&gt; 5                1 2893     5</span></span>
+<span><span class="co">#&gt; 6                1 1236     6</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

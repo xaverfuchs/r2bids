@@ -3,5 +3,6 @@
 export(check_input_data)
 export(read_bids)
 export(to_snake_case)
-export(write_bids)
 export(write_metadata)
+export(write_participants_tsv)
+export(write_task_tsv)

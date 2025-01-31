@@ -1,6 +1,6 @@
 Package: r2bids
 Title: Convert R data frames with behavioral data to the Brain Imaging Data Structure (BIDS) format
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: 
     person(given="Xaver", family="Fuchs", email="xaver.fuchs@plus.ac.at", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7690-8969"))

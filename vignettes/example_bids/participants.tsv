@@ -1,4 +1,4 @@
-participant_id	age	gender
-sub-1	21	M
-sub-2	32	F
-sub-3	27	O
+participant_id	age	sex
+sub-1	21	m
+sub-2	32	f
+sub-3	27	o

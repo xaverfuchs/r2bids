@@ -84,9 +84,10 @@ B006Data_bids <- B006Data_bids %>%
 ### Validate the Data Set
 
 ```{r}
-B006Data_bids <- check_input_data(B006Data_bids, participant_col = "Participant", 
+B006Data_bids <- check_input_data(B006Data_bids, 
+                                  participant_col = "Participant", 
                                   session_col = "session", 
-                                  gender_col = "Sex")
+                                  sex_col = "Sex")
 ```
 
 Now we check the data set
@@ -103,16 +104,27 @@ Note that we have several variables this time that will be passed to the partici
 # Output directory 
 output_dir <- "example_bids2"
 
-# Task name for BIDS
-task_name <- "LID"
-
 # Create the BIDS dataset
-write_bids(data = B006Data_bids, output_dir = output_dir, 
-           task_name = task_name, 
-           participant_info_cols = c("age", "gender", "arm_top", "length_lower_arm"), 
-           file_suffix = "beh")
+write_task_tsv(data = B006Data_bids, 
+               bids_dir = output_dir, data_type = "beh", 
+               filename_prefixes = c("sub-", "ses-", "task-", "run-"),
+               filename_variables = c("participant_id", "session", "LID"="task", "run"),
+               path_prefixes = c("sub-", "ses-"),
+               path_variables = c("participant_id", "session"),
+               ignore_variables = c("age", "sex", "arm_top", "length_lower_arm"))
 
 ```
+Now we will write the participants.tsv
+
+```{r}
+write_participants_tsv(data = B006Data_bids, bids_dir = output_dir,
+                       include_variables = c("participant_id", 
+                                             "age", 
+                                             "sex", 
+                                             "arm_top", 
+                                             "length_lower_arm"))
+```
+
 
 ## Step 4: Define and Write JSON Metadata
 
@@ -239,7 +251,10 @@ meta_data <- list(
 Now the JSON file will be added to the directory.
 
 ```{r}
-write_metadata(output_dir = output_dir, task_name = task_name, meta_data = meta_data)
+write_metadata(bids_dir = output_dir, 
+               task_name = "LID", 
+               data_type = "beh",
+               meta_data = meta_data)
 ```
 
 ## Step 5: Read and Inspect the Generated Files
@@ -247,7 +262,12 @@ write_metadata(output_dir = output_dir, task_name = task_name, meta_data = meta_
 Once the files are created, you can laod them again with the function read_bids().
 
 ```{r}
-data_loaded <- read_bids(bids_dir = "example_bids2", task_name = task_name, file_suffix = "beh")
+data_loaded <- read_bids(bids_dir = "example_bids2", 
+                         data_type = "beh", 
+                         filename_prefixes =  c("sub-", "ses-", 
+                                                "task-", "run-"), 
+                         filename_variables = c("participant_id", 
+                                                "session", "task", "run"))
 ```
 
 The output is a list with the participant data and the task data.

@@ -38,7 +38,7 @@ Note that some variables are deliberately not called like they should be called 
 # Toy dataset
 example_data <- data.frame(
   ParticipantID = c(1, 2, 3, 1, 2, 3),
-  Gender=c("M", "F", "O", "M", "F", "O"),
+  Sex=c("M", "F", "O", "M", "F", "O"),
   Age=c(21, 32, 27, 21, 32, 27),
   Session = c(1, 1, 1, 2, 2, 2),
   ResponseTime = c(350, 400, 375, 415, 372, 401),
@@ -63,7 +63,7 @@ Here we will apply that function to the toy data created in the last step.
 example_data_checked <- check_input_data(data = example_data, 
                  participant_col = "ParticipantID", 
                  session_col = "Session", 
-                 gender_col = "Gender")
+                 sex_col = "Sex")
 
 print(example_data_checked)
 ```
@@ -71,26 +71,41 @@ If the input data is valid, you can proceed to the next steps.
 
 
 ## Step 3: Write the BIDS data
-Now, we use the write_bids function to generate the BIDS-compliant directory and files.
+
+### Write the task files
+Now, we use the write_task_tsv function to generate the BIDS-compliant directory and files.
 
 This function performs the following actions:
 
 1) Creates the output directory (if it doesn't already exist).
-2) Writes a participants.tsv file that includes participant IDs and session numbers.
-3) Writes a task-specific .tsv file with the behavioral data (response times, accuracy, etc.).
+2) Writes a task-specific .tsv file with the behavioral data (response times, accuracy, etc.).
 
 ```{r}
 # Output directory 
 output_dir <- "example_bids"
 
-# Task name for BIDS
-task_name <- "reaction"
-
-# Create the BIDS dataset
-write_bids(data = example_data_checked, output_dir = output_dir, task_name = task_name, participant_info_cols = c("age", "gender"), file_suffix = "beh")
+# Write the task-related tsv files
+write_task_tsv(data = example_data_checked, bids_dir = output_dir, 
+               data_type = "beh", 
+               filename_prefixes = c("sub-", "ses-", "task-"), 
+               filename_variables = c("participant_id", "session", "reaction"="task"),
+               path_prefixes = c("sub-", "ses-"), 
+               path_variables = c("participant_id", "session"), 
+               ignore_variables = c("age", "sex"))
 
 ```
-You should find a directory now containing the desired files. 
+You should find a directory now containing the desired files. Notice that we used a little trick here because we called out task "reaction" by providing a name in the vector. This allows defining variables that are invariant and not contained in the data. 
+We also added the participant information to the "ignore_variables" because we want them in the participants.tsv but nowhere else. 
+
+### Write the participants file
+
+Next we will use the write_participants_tsv function to create a participants.tsv file that includes participant IDs and demographic variables.
+
+```{r}
+write_participants_tsv(data = example_data_checked, bids_dir = output_dir,
+                       include_variables = c("participant_id", "age", "sex"))
+```
+
 
 ## Step 4: Define and Write JSON Metadata
 
@@ -105,13 +120,13 @@ meta_data <- list(
   participant_id = list(
     Description = "Unique participant identifier in the format sub-XXX.",
     Levels = list(
-      "sub-001" = "Participant 1",
-      "sub-002" = "Participant 2",
-      "sub-003" = "Participant 3"
+      "sub-1" = "Participant 1",
+      "sub-2" = "Participant 2",
+      "sub-3" = "Participant 3"
     )
   ),
-  gender = list(
-    Description = "Self-reported gender of the participant.",
+  Sex = list(
+    Description = "Self-reported Sex of the participant.",
     Levels = list(
       "m" = "Male",
       "f" = "Female",
@@ -125,8 +140,8 @@ meta_data <- list(
   session = list(
     Description = "Session identifier.",
     Levels = list(
-      "ses-01" = "First session",
-      "ses-02" = "Second session"
+      "ses-1" = "First session",
+      "ses-2" = "Second session"
     )
   ),
   response_time = list(
@@ -149,7 +164,9 @@ print(meta_data)
 The JSON file that should be included in the BIDS structure can now easily be written wirth the function write_metadata(). 
 
 ```{r}
-write_metadata(output_dir = output_dir, task_name = task_name, meta_data = meta_data)
+write_metadata(bids_dir = output_dir, task_name = "reaction", 
+               data_type = "beh", 
+               meta_data = meta_data)
 ```
 
 A JSON file should have been added to the directory. 
@@ -160,7 +177,9 @@ A JSON file should have been added to the directory.
 Once the files are created, you can laod them again with the function read_bids().
 
 ```{r}
-data_loaded <- read_bids(bids_dir = "example_bids", task_name = task_name, file_suffix = "beh")
+data_loaded <- read_bids(bids_dir = "example_bids", data_type = "beh", 
+                         filename_prefixes =  c("sub-", "ses-", "task-"), 
+                         filename_variables = c("participant_id", "session", "task"))
 ```
 The output is a list with the participant data and the task data.
 

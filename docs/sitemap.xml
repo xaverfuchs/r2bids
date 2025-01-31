@@ -45,4 +45,10 @@
   <url>
     <loc>https://xaverfuchs.github.io/r2bids/reference/write_metadata.html</loc>
   </url>
+  <url>
+    <loc>https://xaverfuchs.github.io/r2bids/reference/write_participants_tsv.html</loc>
+  </url>
+  <url>
+    <loc>https://xaverfuchs.github.io/r2bids/reference/write_task_tsv.html</loc>
+  </url>
 </urlset>

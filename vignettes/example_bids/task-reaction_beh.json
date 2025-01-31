@@ -2,13 +2,13 @@
   "participant_id": {
     "Description": "Unique participant identifier in the format sub-XXX.",
     "Levels": {
-      "sub-001": "Participant 1",
-      "sub-002": "Participant 2",
-      "sub-003": "Participant 3"
+      "sub-1": "Participant 1",
+      "sub-2": "Participant 2",
+      "sub-3": "Participant 3"
     }
   },
-  "gender": {
-    "Description": "Self-reported gender of the participant.",
+  "Sex": {
+    "Description": "Self-reported Sex of the participant.",
     "Levels": {
       "m": "Male",
       "f": "Female",
@@ -22,8 +22,8 @@
   "session": {
     "Description": "Session identifier.",
     "Levels": {
-      "ses-01": "First session",
-      "ses-02": "Second session"
+      "ses-1": "First session",
+      "ses-2": "Second session"
     }
   },
   "response_time": {

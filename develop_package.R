@@ -11,8 +11,8 @@ devtools::build_readme()
 
 #Part 2: authoring
 usethis::use_vignette("B_Example_with_real_data") # Authoring vignettes
-usethis::use_r("B006Data.R") # Authoring function
-usethis::use_data(B006Data)
+usethis::use_r("a function or dataset.R") # Authoring function
+usethis::use_data(B006Data) #associates a data set with the package
 
 
 #Part 3: Sticker creation

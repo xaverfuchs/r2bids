@@ -4,7 +4,7 @@
 \alias{write_metadata}
 \title{Write BIDS JSON Metadata}
 \usage{
-write_metadata(output_dir, task_name, meta_data)
+write_metadata(output_dir, task_name, datatype = "beh", meta_data)
 }
 \arguments{
 \item{output_dir}{The directory where the BIDS metadata file will be saved.}
@@ -21,6 +21,6 @@ This function creates a BIDS-compliant JSON metadata file for the task data.
 }
 \examples{
 meta_data <- list(response_time = list(Description = "Response time in milliseconds", Units = "ms"))
-write_metadata(output_dir = "bids_dir", task_name = "RTTask", meta_data = meta_data)
+write_metadata(output_dir = "bids_dir", task_name = "RTTask", datatype = "beh", meta_data = meta_data)
 
 }

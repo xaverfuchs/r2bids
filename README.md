@@ -1,16 +1,21 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# r2bids - Covert R data to BIDS format
+# r2bids - Convert R data to BIDS format
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 <img src="man/figures/logo.png" alt="drawing" width="20%" align="right"/>
 
-This package provides functions for converting and storing data
-reprensented in R data frames in the convenient [BIDS
-format](https://bids.neuroimaging.io/).
+This package provides functions for converting and storing behavioral
+data represented in R data frames in the convenient [BIDS
+format](https://bids.neuroimaging.io/). At present, this package is
+suited to convert data from behavioral studies that is represented in a
+trial structure (for example one trial per row). An event structure,
+which is the common representation in BIDS can be handled with some
+workarounds in the current version and more dedicated funtions for event
+files might be implemented in future releases.
 
 The BIDS format is becoming increasingly popular in neuroscience as a
 means of storing data sets along with structured descriptions of
@@ -43,7 +48,7 @@ library(r2bids)
 ``` r
 example_data <- data.frame(
   ParticipantID = c(1, 2, 3, 1, 2, 3),
-  Gender=c("M", "F", "O", "M", "F", "O"),
+  Sex=c("M", "F", "O", "M", "F", "O"),
   Age=c(21, 32, 27, 21, 32, 27),
   Session = c(1, 1, 1, 2, 2, 2),
   ResponseTime = c(350, 400, 375, 415, 372, 401),
@@ -60,98 +65,59 @@ conventions.
 example_data_checked <- check_input_data(data = example_data, 
                  participant_col = "ParticipantID", 
                  session_col = "Session", 
-                 gender_col = "Gender")
+                 sex_col = "Sex")
 #> 
 #> Step 1: checking variable labels
-#> checking variable Gender
+#> checking variable Sex
 #> renamed variable label: M -> m
 #> renamed variable label: F -> f
 #> renamed variable label: O -> o
 #> 
 #> Step 2: checking participant and session identifiers
 #> renamed variable: ParticipantID -> participant_id
-#> renamed ids to sub-001, sub-002, sub-003 ...
+#> renamed ids to sub-1, sub-2, sub-3 ...
 #> renamed variable: Session -> session
-#> renamed sessions to ses-01, ses-02 ...
-#> renamed variable: Gender -> gender
+#> renamed sessions to ses-1, ses-2 ...
+#> renamed variable: Sex -> sex
 #> 
 #> Step 3: checking if all variable names are snake_case
 #> renamed variable: Age -> age
 #> renamed variable: ResponseTime -> response_time
 #> renamed variable: Accuracy -> accuracy
 #> 
-#> Step 4: checking correct coding of gender variable
-#> Warning in check_input_data(data = example_data, participant_col =
-#> "ParticipantID", : Invalid values found in gender column. Please recode to 'm',
-#> 'f', or 'o'.
+#> Step 4: checking correct coding of sex variable
 ```
 
 ### Write BIDS file
 
 ``` r
-write_bids(data = example_data_checked, output_dir = "./readme_files/example_bids", task_name = "reaction", participant_info_cols = c("age", "gender"), file_suffix = "beh")
-#> Participants data saved: ./readme_files/example_bids/participants.tsv
-#> Task data saved: ./readme_files/example_bids/sub-001/ses-01/sub-001_task-reaction_beh.tsv
-#> Task data saved: ./readme_files/example_bids/sub-001/ses-02/sub-001_task-reaction_beh.tsv
-#> Task data saved: ./readme_files/example_bids/sub-002/ses-01/sub-002_task-reaction_beh.tsv
-#> Task data saved: ./readme_files/example_bids/sub-002/ses-02/sub-002_task-reaction_beh.tsv
-#> Task data saved: ./readme_files/example_bids/sub-003/ses-01/sub-003_task-reaction_beh.tsv
-#> Task data saved: ./readme_files/example_bids/sub-003/ses-02/sub-003_task-reaction_beh.tsv
-```
-
-### Define Metadata and write JSON file
-
-``` r
-# Metadata for the example above with nested lists for each variable
-meta_data <- list(
-  participant_id = list(
-    Description = "Unique participant identifier in the format sub-XXX.",
-    Levels = list(
-      "sub-001" = "Participant 1",
-      "sub-002" = "Participant 2",
-      "sub-003" = "Participant 3"
-    )
-  ),
-  gender = list(
-    Description = "Self-reported gender of the participant.",
-    Levels = list(
-      "m" = "Male",
-      "f" = "Female",
-      "o" = "Other"
-    )
-  ),
-  age = list(
-    Description = "Age of the participant in years.",
-    Units = "years"
-  ),
-  session = list(
-    Description = "Session identifier.",
-    Levels = list(
-      "ses-01" = "First session",
-      "ses-02" = "Second session"
-    )
-  ),
-  response_time = list(
-    Description = "Response time of the participant in the task.",
-    Units = "milliseconds"
-  ),
-  accuracy = list(
-    Description = "Task accuracy (1 = correct, 0 = incorrect).",
-    Levels = list(
-      "0" = "Incorrect response",
-      "1" = "Correct response"
-    )
-  )
-)
-```
-
-``` r
-write_metadata(output_dir = "./readme_files/example_bids", task_name = "reaction", meta_data = meta_data)
-#> Metadata JSON saved: ./readme_files/example_bids/task-reaction_beh.json
+write_task_tsv(data = example_data_checked, bids_dir = "example_bids", 
+               data_type = "beh", 
+               filename_prefixes = c("sub-", "ses-", "task-"), 
+               filename_variables = c("participant_id", "session", "reaction"="task"),
+               path_prefixes = c("sub-", "ses-"), 
+               path_variables = c("participant_id", "session"), 
+               ignore_variables = c("age", "sex"))
+#> Variable task does not exist in the data and will be imputed as reaction
+#> Main BIDS directory successfully created: example_bids
+#> Folder successfully created: example_bids/sub-1/ses-1
+#> Task data saved: example_bids/sub-1/ses-1/sub-1_ses-1_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-2/ses-1
+#> Task data saved: example_bids/sub-2/ses-1/sub-2_ses-1_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-3/ses-1
+#> Task data saved: example_bids/sub-3/ses-1/sub-3_ses-1_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-1/ses-2
+#> Task data saved: example_bids/sub-1/ses-2/sub-1_ses-2_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-2/ses-2
+#> Task data saved: example_bids/sub-2/ses-2/sub-2_ses-2_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-3/ses-2
+#> Task data saved: example_bids/sub-3/ses-2/sub-3_ses-2_task-reaction_beh.tsv
 ```
 
 The resulting output looks like that:
 <img src="man/figures/folder_stucture.jpeg" alt="folder structure" width="100%" align="left"/>
 
-For more detailed example see the vignettes on the [package
+## More examples
+
+For more detailed examples see the vignettes on the [package
 website](https://xaverfuchs.github.io/r2bids/)!
