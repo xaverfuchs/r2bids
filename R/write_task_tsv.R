@@ -106,11 +106,9 @@ write_task_tsv <- function(data, bids_dir, data_type = "beh",
     data_selected <- data[selected_rows, selected_variables, drop = FALSE]
 
     # Directory and file names
-    dir_name <- paste(bids_dir, unique(path_identifiers[selected_rows]), sep=.Platform$file.sep)
-    filename <- sprintf("%s%s%s%s%s_%s.tsv",
-                        bids_dir,
-                        .Platform$file.sep,
-                        unique(path_identifiers[selected_rows]),
+    dir_name <- paste(bids_dir, c(unique(path_identifiers[selected_rows])), data_type, sep=.Platform$file.sep)
+    filename <- sprintf("%s%s%s_%s.tsv",
+                        dir_name,
                         .Platform$file.sep,
                         i,
                         data_type)

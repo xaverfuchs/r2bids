@@ -100,18 +100,18 @@ write_task_tsv(data = example_data_checked, bids_dir = "example_bids",
                ignore_variables = c("age", "sex"))
 #> Variable task does not exist in the data and will be imputed as reaction
 #> Main BIDS directory successfully created: example_bids
-#> Folder successfully created: example_bids/sub-1/ses-1
-#> Task data saved: example_bids/sub-1/ses-1/sub-1_ses-1_task-reaction_beh.tsv
-#> Folder successfully created: example_bids/sub-2/ses-1
-#> Task data saved: example_bids/sub-2/ses-1/sub-2_ses-1_task-reaction_beh.tsv
-#> Folder successfully created: example_bids/sub-3/ses-1
-#> Task data saved: example_bids/sub-3/ses-1/sub-3_ses-1_task-reaction_beh.tsv
-#> Folder successfully created: example_bids/sub-1/ses-2
-#> Task data saved: example_bids/sub-1/ses-2/sub-1_ses-2_task-reaction_beh.tsv
-#> Folder successfully created: example_bids/sub-2/ses-2
-#> Task data saved: example_bids/sub-2/ses-2/sub-2_ses-2_task-reaction_beh.tsv
-#> Folder successfully created: example_bids/sub-3/ses-2
-#> Task data saved: example_bids/sub-3/ses-2/sub-3_ses-2_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-1/ses-1/beh
+#> Task data saved: example_bids/sub-1/ses-1/beh/sub-1_ses-1_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-2/ses-1/beh
+#> Task data saved: example_bids/sub-2/ses-1/beh/sub-2_ses-1_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-3/ses-1/beh
+#> Task data saved: example_bids/sub-3/ses-1/beh/sub-3_ses-1_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-1/ses-2/beh
+#> Task data saved: example_bids/sub-1/ses-2/beh/sub-1_ses-2_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-2/ses-2/beh
+#> Task data saved: example_bids/sub-2/ses-2/beh/sub-2_ses-2_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-3/ses-2/beh
+#> Task data saved: example_bids/sub-3/ses-2/beh/sub-3_ses-2_task-reaction_beh.tsv
 ```
 
 The resulting output looks like that:
