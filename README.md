@@ -279,8 +279,6 @@ check_meta_data(meta_data = meta_data, example_task_data_checked, example_partic
 #> ✔ sex ...ok
 #> ✔ response_time ...ok
 #> Warning in check_meta_data(meta_data = meta_data, example_task_data_checked, :
-#> ⚠ Variable session found in data but not declared in meta_data.
-#> Warning in check_meta_data(meta_data = meta_data, example_task_data_checked, :
 #> ⚠ Variable accuracy found in data but not declared in meta_data.
 #> Warning in check_meta_data(meta_data = meta_data, example_task_data_checked, :
 #> ⚠ Variable age found in data but not declared in meta_data.
