@@ -21,7 +21,7 @@ This function adds one variable with descriptions to an existing object of the c
 }
 \examples{
 meta_data <- create_meta_data() #create object
-write_meta_data(bids_dir = "bids_dir", task_name = "RTTask", data_type = "beh", meta_data = meta_data)
+meta_data <- add_meta_data(meta_data, variable_name = "session") #a self-explanatory variable
 meta_data <- add_meta_data(meta_data, variable_name = "response_time", Description = "Response time in milliseconds", Units = "ms") #provide information for reaction time variable
 meta_data <- add_meta_data(meta_data, variable_name = "age", Description = "Age of the participant", Type = "integer", Units = "years") #provide information for the age variable
 meta_data <- add_meta_data(meta_data = meta_data, variable_name = "condition", labels = list("experimental"="500 ml of pure alcohol", "control"="a sober session")) # note that labels for conditions are provided as a names list.

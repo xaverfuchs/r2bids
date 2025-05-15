@@ -37,7 +37,7 @@ print_data_structure <- function(...) {
         unique_values <- unique(var_now)
         n_unique_values <- length(unique_values)
         if (n_unique_values > 10) {
-          cat("Unique values (first 10 of", n_uniq, "):", paste(head(unique_values, 10), collapse = ", "), ", ...\n")
+          cat("Unique values (first 10 of", n_unique_values, "):", paste(head(unique_values, 10), collapse = ", "), ", ...\n")
         } else {
           cat("Unique values:", paste(unique_values, collapse = ", "), "\n")
         }

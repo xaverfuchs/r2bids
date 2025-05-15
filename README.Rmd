@@ -100,7 +100,7 @@ example_participant_data_checked$sex <- tolower(example_participant_data_checked
 Next we will check the data by printing information that needs to be declared in the meta data.
 
 ```{r}
-print_data_structure(example_participant_data_checked, example_participant_data_checked)
+print_data_structure(example_task_data_checked, example_participant_data_checked)
 ```
 
 ### Write the meta data

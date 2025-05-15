@@ -137,7 +137,7 @@ Next we will check the data by printing information that needs to be
 declared in the meta data.
 
 ``` r
-print_data_structure(example_participant_data_checked, example_participant_data_checked)
+print_data_structure(example_task_data_checked, example_participant_data_checked)
 #> 
 #> --- Dataset 1 ---
 #> 
@@ -145,13 +145,17 @@ print_data_structure(example_participant_data_checked, example_participant_data_
 #> Type: character 
 #> Unique values: sub-1, sub-2, sub-3 
 #> 
-#> variable: sex 
+#> variable: session 
 #> Type: character 
-#> Unique values: m, f, o 
+#> Unique values: ses-01, ses-02 
 #> 
-#> variable: age 
+#> variable: response_time 
 #> Type: numeric 
-#> Range: 21 - 32 
+#> Range: 350 - 415 
+#> 
+#> variable: accuracy 
+#> Type: numeric 
+#> Range: 0 - 1 
 #> 
 #> --- Dataset 2 ---
 #> 

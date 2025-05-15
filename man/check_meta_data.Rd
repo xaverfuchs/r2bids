@@ -4,14 +4,14 @@
 \alias{check_meta_data}
 \title{Validate metadata}
 \usage{
-check_meta_data(meta_data, ...)
+check_meta_data(meta_data, ..., ignore_variables = c("session", "task"))
 }
 \arguments{
-\item{meta_data}{A named list containing meta_data about the behavioral task.}
+\item{meta_data}{An object of class "metadata" with entries.}
 
 \item{...}{Any number of data sets provided as data.frames. Usually this would be task data and participant data.}
 
-\item{data_type}{The data type  to include in the JSON filename. Default is "beh".}
+\item{ignore_variables}{A character vector of variables to explicitly exclude from the checks. Default is c("session", "task") because they are usually implemented in the file and folder names.}
 }
 \value{
 This function does not return anything but prints a summary of correctly declared and mismatching varibales to the console.
@@ -23,8 +23,9 @@ This function compares the entries within metadata objects with variables in the
 meta_data <- create_meta_data()
 meta_data <- add_meta_data(meta_data, variable_name = "participant_id", Description = "Identifier for participants in the form of sub-XXX") #add an existing variable
 meta_data <- add_meta_data(meta_data = meta_data, variable_name = "condition", labels = list("experimental"="500 ml of pure alcohol", "control"="a sober session"))
+meta_data <- add_meta_data(meta_data = meta_data, variable_name = "session", Description = "Identifier of the session") #add an ignored variable
 example_participant_data <- data.frame(participant_id = c("sub-001", "sub-002"), age = c(24, 45), sex=c("male", "female"))
-example_task_data <- data.frame(participant_id = c("sub-001", "sub-002"), session = c("ses-01", "ses-01"), dv_var=c(0.564, 2.123))
+example_task_data <- data.frame(participant_id = c("sub-001", "sub-002"), dv_var=c(0.564, 2.123))
 check_meta_data(meta_data, example_task_data, example_participant_data)
 
 }
