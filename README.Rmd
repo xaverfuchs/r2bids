@@ -13,15 +13,15 @@ knitr::opts_chunk$set(
 )
 ```
 
-# r2bids - Convert R data to BIDS format
+# r2bids - Convert R data with behavioral data to BIDS behavioral format
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 <img src="man/figures/logo.png" alt="drawing" width="20%" align="right"/>
 
-This package provides functions for converting and storing behavioral data represented in R data frames in the convenient [BIDS format](https://bids.neuroimaging.io/).
-At present, this package is suited to convert data from behavioral studies that is represented in a trial structure (for example one trial per row). An event structure, which is the common representation in BIDS can be handled with some workarounds in the current version and more dedicated funtions for event files might be implemented in future releases. 
+This package provides functions for converting and storing behavioral data represented in R data frames to the convenient [BIDS format](https://bids.neuroimaging.io/).
+At present, this package is suited to convert data from behavioral studies that are represented in a trial structure (for example one trial per row). An event structure, which is the common representation in BIDS, can be handled with some workarounds in the current version and more dedicated functions dealing with an event representation might be implemented in future releases. 
 
 The BIDS format is becoming increasingly popular in neuroscience as a means of storing data sets along with structured descriptions of samples, tasks, and variables. 
 
@@ -39,6 +39,17 @@ You can install the development version of *r2bids* from [GitHub](https://github
 # devtools::install_github("xaverfuchs/r2bids")
 ```
 
+## General info and prerequisites
+The package's general workflow is like that: 
+
+1) You collect data from all participants together in one single data frame that we refer to as the "task data".
+2) You collect data describing your participants in another data frame that we refer to as the "participant data".
+3) For both *task data* and *participant data* there are functions to check whether the variable names and entries of columns adhere to BIDS standards and to do convenient renaming of such within the data frames. 
+4) View all used variables and labels using a view function for easy scripting
+5) Write meta data declaring all variables and entries that appear in the data
+6) Write a BIDS directors containing the task data, participant data, and meta data
+
+The next sections will quickly demonstrate these steps.
 
 ## Example case
 
@@ -46,32 +57,109 @@ You can install the development version of *r2bids* from [GitHub](https://github
 library(r2bids)
 ```
 
-### Generate some toy data
+### Generate some toy task and participant data
+
 ```{r}
-example_data <- data.frame(
+example_task_data <- data.frame(
   ParticipantID = c(1, 2, 3, 1, 2, 3),
-  Sex=c("M", "F", "O", "M", "F", "O"),
-  Age=c(21, 32, 27, 21, 32, 27),
   Session = c(1, 1, 1, 2, 2, 2),
   ResponseTime = c(350, 400, 375, 415, 372, 401),
   Accuracy = c(1, 0, 1, 1, 1, 1)
 )
 ```
 
-### Validate the input data
+```{r}
+example_participant_data <- data.frame(
+  ParticipantID = c(1, 2, 3, 1, 2, 3),
+  Sex=c("M", "F", "O", "M", "F", "O"),
+  Age=c(21, 32, 27, 21, 32, 27)
+)
+```
+
+### Check the task and participant data
 
 This function does renaming of variables and labels to adhere to BIDS conventions. 
 ```{r}
-example_data_checked <- check_input_data(data = example_data, 
+example_task_data_checked <- check_task_data(data = example_task_data, 
                  participant_col = "ParticipantID", 
-                 session_col = "Session", 
-                 sex_col = "Sex")
+                 session_col = "Session")
+```
+
+```{r}
+example_participant_data_checked <- check_participant_data(data = example_participant_data, 
+                 participant_col = "ParticipantID", sex_col = "Sex", age_col = "Age")
+```
+
+Now we have nice data sets for both, except for the "sex" varibale, that is not coded correcty and that we will fix manually.
+
+```{r}
+example_participant_data_checked$sex <- tolower(example_participant_data_checked$sex)
+```
+
+### Inspect the data sets
+Next we will check the data by printing information that needs to be declared in the meta data.
+
+```{r}
+print_data_structure(example_participant_data_checked, example_participant_data_checked)
+```
+
+### Write the meta data
+
+Fist create a meta data object...
+```{r}
+meta_data <- create_meta_data()
+```
+
+Then we add variables, one by one...
+```{r}
+#describe the first variable
+meta_data <- add_meta_data(meta_data = meta_data, 
+                           variable_name = "participant_id", 
+                           Description = "Unique participant identifier in the format sub-X.",
+                           Levels = list("sub-1" = "Participant 1", 
+                                         "sub-2" = "Participant 2",
+                                         "sub-3" = "Participant 3")
+                           )
+
+meta_data <- add_meta_data(meta_data = meta_data, 
+                           variable_name = "sex", 
+                           Description = "Self-reported sex of the participant.",
+                           Levels = list("m" = "Male", "f" = "Female", "o" = "Other")
+                           )
+
+# ... and the next
+meta_data <- add_meta_data(meta_data = meta_data, 
+                           variable_name = "response_time", 
+                           Description = "Response time of the participant in the task.",
+                           Units = "milliseconds", 
+                           Type="numeric")
+
+# ... do this for all variables. Note that you can add as many fiels as you wish (here: Units, and Type)
+
+```
+
+Lets, have a look at the object
+```{r}
+meta_data
+```
+
+As you can see, the meta data is nothing else than a list (with a class "metadata"). If you feel comfortable with writing long lists, you can also write the meta data without the "add_meta_data" function as a list directly. 
+
+#### Check completeness of the meta data
+
+Next, we should ensure that the variables declared in the meta data match the ones in our data. There is a function to do that. It takes the created meta data and as many data frames as you wish (the ones that you use, i.e., task data and participant data).
+
+```{r}
+check_meta_data(meta_data = meta_data, example_task_data_checked, example_participant_data_checked)
 ```
 
 ### Write BIDS file
+You should fix all these issues first, however, for demonstration purposes, we will ignore them for now and move on to writing the BIDS structure despite the unresolved issues...
+
+#### Write task.tsv files
 
 ```{r}
-write_task_tsv(data = example_data_checked, bids_dir = "example_bids", 
+write_task_tsv(data = example_task_data_checked, bids_dir = "example_bids", 
                data_type = "beh", 
                filename_prefixes = c("sub-", "ses-", "task-"), 
                filename_variables = c("participant_id", "session", "reaction"="task"),
@@ -79,10 +167,39 @@ write_task_tsv(data = example_data_checked, bids_dir = "example_bids",
                path_variables = c("participant_id", "session"), 
                ignore_variables = c("age", "sex"))
 ```
+#### Write participants.tsv files
 
+```{r}
+write_participants_tsv(data = example_participant_data_checked,
+                         bids_dir = "example_bids", include_variables = c("participant_id", "sex", "age"))
+```
+
+Please note that this function can also be repurposed to write other kinds of tsv files (like sessions.tsv).
+
+#### Write the meta data
+```{r}
+write_meta_data(meta_data = meta_data, bids_dir = "example_bids", task_name = "RT_Task")
+```
+
+#### Inspect the created BIDS directory
 
 The resulting output looks like that:
 <img src="man/figures/folder_stucture.jpeg" alt="folder structure" width="100%" align="left"/>
+
+### Load the data
+You can also load data from a created BIDS directory into R. This is also a great check whether things went wel...
+
+```{r}
+example_data_imported <- read_bids(bids_dir = "example_bids")
+```
+
+```{r}
+example_data_imported$task_data
+```
+
+```{r}
+example_data_imported$participants
+```
 
 ## More examples
 For more detailed examples see the vignettes on the [package website](https://xaverfuchs.github.io/r2bids/)!

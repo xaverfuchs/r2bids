@@ -45,13 +45,6 @@
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/A_Example_with_toy_data.html">BIDS conversion example with toy data</a>
-    <a class="dropdown-item" href="articles/B_Example_with_real_data.html">BIDS conversion example with data from a tactile perception study (B006)</a>
-  </div>
-</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -66,13 +59,13 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="r2bids---convert-r-data-to-bids-format">r2bids - Convert R data to BIDS format<a class="anchor" aria-label="anchor" href="#r2bids---convert-r-data-to-bids-format"></a>
+<img src="logo.png" class="logo" alt=""><h1 id="r2bids---convert-r-data-with-behavioral-data-to-bids-behavioral-format">r2bids - Convert R data with behavioral data to BIDS behavioral format<a class="anchor" aria-label="anchor" href="#r2bids---convert-r-data-with-behavioral-data-to-bids-behavioral-format"></a>
 </h1>
 </div>
 <!-- badges: start -->
 <!-- badges: end -->
 <p><img src="reference/figures/logo.png" alt="drawing" width="20%" align="right"></p>
-<p>This package provides functions for converting and storing behavioral data represented in R data frames in the convenient <a href="https://bids.neuroimaging.io/" class="external-link">BIDS format</a>. At present, this package is suited to convert data from behavioral studies that is represented in a trial structure (for example one trial per row). An event structure, which is the common representation in BIDS can be handled with some workarounds in the current version and more dedicated funtions for event files might be implemented in future releases.</p>
+<p>This package provides functions for converting and storing behavioral data represented in R data frames to the convenient <a href="https://bids.neuroimaging.io/" class="external-link">BIDS format</a>. At present, this package is suited to convert data from behavioral studies that are represented in a trial structure (for example one trial per row). An event structure, which is the common representation in BIDS, can be handled with some workarounds in the current version and more dedicated functions dealing with an event representation might be implemented in future releases.</p>
 <p>The BIDS format is becoming increasingly popular in neuroscience as a means of storing data sets along with structured descriptions of samples, tasks, and variables.</p>
 <div class="section level2">
 <h2 id="website">Website<a class="anchor" aria-label="anchor" href="#website"></a>
@@ -89,58 +82,224 @@
 <span><span class="co"># devtools::install_github("xaverfuchs/r2bids")</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="general-info-and-prerequisites">General info and prerequisites<a class="anchor" aria-label="anchor" href="#general-info-and-prerequisites"></a>
+</h2>
+<p>The package’s general workflow is like that:</p>
+<ol style="list-style-type: decimal">
+<li>You collect data from all participants together in one single data frame that we refer to as the “task data”.</li>
+<li>You collect data describing your participants in another data frame that we refer to as the “participant data”.</li>
+<li>For both <em>task data</em> and <em>participant data</em> there are functions to check whether the variable names and entries of columns adhere to BIDS standards and to do convenient renaming of such within the data frames.</li>
+<li>View all used variables and labels using a view function for easy scripting</li>
+<li>Write meta data declaring all variables and entries that appear in the data</li>
+<li>Write a BIDS directors containing the task data, participant data, and meta data</li>
+</ol>
+<p>The next sections will quickly demonstrate these steps.</p>
+</div>
+<div class="section level2">
 <h2 id="example-case">Example case<a class="anchor" aria-label="anchor" href="#example-case"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://xaverfuchs.github.io/r2bids/">r2bids</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="generate-some-toy-data">Generate some toy data<a class="anchor" aria-label="anchor" href="#generate-some-toy-data"></a>
+<h3 id="generate-some-toy-task-and-participant-data">Generate some toy task and participant data<a class="anchor" aria-label="anchor" href="#generate-some-toy-task-and-participant-data"></a>
 </h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">example_task_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  ParticipantID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>  Sex<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"O"</span>, <span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"O"</span><span class="op">)</span>,</span>
-<span>  Age<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">21</span>, <span class="fl">32</span>, <span class="fl">27</span>, <span class="fl">21</span>, <span class="fl">32</span>, <span class="fl">27</span><span class="op">)</span>,</span>
 <span>  Session <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  ResponseTime <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">350</span>, <span class="fl">400</span>, <span class="fl">375</span>, <span class="fl">415</span>, <span class="fl">372</span>, <span class="fl">401</span><span class="op">)</span>,</span>
 <span>  Accuracy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">example_participant_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  ParticipantID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  Sex<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"O"</span>, <span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"O"</span><span class="op">)</span>,</span>
+<span>  Age<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">21</span>, <span class="fl">32</span>, <span class="fl">27</span>, <span class="fl">21</span>, <span class="fl">32</span>, <span class="fl">27</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="validate-the-input-data">Validate the input data<a class="anchor" aria-label="anchor" href="#validate-the-input-data"></a>
+<h3 id="check-the-task-and-participant-data">Check the task and participant data<a class="anchor" aria-label="anchor" href="#check-the-task-and-participant-data"></a>
 </h3>
 <p>This function does renaming of variables and labels to adhere to BIDS conventions.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">example_data_checked</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/check_input_data.html">check_input_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">example_data</span>, </span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">example_task_data_checked</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/check_task_data.html">check_task_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">example_task_data</span>, </span>
 <span>                 participant_col <span class="op">=</span> <span class="st">"ParticipantID"</span>, </span>
-<span>                 session_col <span class="op">=</span> <span class="st">"Session"</span>, </span>
-<span>                 sex_col <span class="op">=</span> <span class="st">"Sex"</span><span class="op">)</span></span>
+<span>                 session_col <span class="op">=</span> <span class="st">"Session"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Step 1: checking variable labels</span></span>
-<span><span class="co">#&gt; checking variable Sex</span></span>
-<span><span class="co">#&gt; renamed variable label: M -&gt; m</span></span>
-<span><span class="co">#&gt; renamed variable label: F -&gt; f</span></span>
-<span><span class="co">#&gt; renamed variable label: O -&gt; o</span></span>
+<span><span class="co">#&gt; Step 1: checking variable labels in task data</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Step 2: checking participant and session identifiers</span></span>
 <span><span class="co">#&gt; renamed variable: ParticipantID -&gt; participant_id</span></span>
 <span><span class="co">#&gt; renamed ids to sub-1, sub-2, sub-3 ...</span></span>
 <span><span class="co">#&gt; renamed variable: Session -&gt; session</span></span>
-<span><span class="co">#&gt; renamed sessions to ses-1, ses-2 ...</span></span>
-<span><span class="co">#&gt; renamed variable: Sex -&gt; sex</span></span>
+<span><span class="co">#&gt; renamed sessions to ses-01, ses-02 ...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Step 3: checking if all variable names are snake_case</span></span>
-<span><span class="co">#&gt; renamed variable: Age -&gt; age</span></span>
 <span><span class="co">#&gt; renamed variable: ResponseTime -&gt; response_time</span></span>
-<span><span class="co">#&gt; renamed variable: Accuracy -&gt; accuracy</span></span>
+<span><span class="co">#&gt; renamed variable: Accuracy -&gt; accuracy</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">example_participant_data_checked</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/check_participant_data.html">check_participant_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">example_participant_data</span>, </span>
+<span>                 participant_col <span class="op">=</span> <span class="st">"ParticipantID"</span>, sex_col <span class="op">=</span> <span class="st">"Sex"</span>, age_col <span class="op">=</span> <span class="st">"Age"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Step 4: checking correct coding of sex variable</span></span></code></pre></div>
+<span><span class="co">#&gt; Step 1: checking participant data</span></span>
+<span><span class="co">#&gt; renamed variable: ParticipantID -&gt; participant_id</span></span>
+<span><span class="co">#&gt; renamed ids to sub-1, sub-2, sub-3 ...</span></span>
+<span><span class="co">#&gt; renamed variable: Sex -&gt; sex</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Step 2: checking correct coding of sex variable</span></span>
+<span><span class="co">#&gt; Warning in check_participant_data(data = example_participant_data,</span></span>
+<span><span class="co">#&gt; participant_col = "ParticipantID", : Invalid values found in sex column. Please</span></span>
+<span><span class="co">#&gt; recode to 'm', 'f', or 'o'.</span></span>
+<span><span class="co">#&gt; renamed variable: Age -&gt; age</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Step 3: checking if all variable names are snake_case</span></span></code></pre></div>
+<p>Now we have nice data sets for both, except for the “sex” varibale, that is not coded correcty and that we will fix manually.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">example_participant_data_checked</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">example_participant_data_checked</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="inspect-the-data-sets">Inspect the data sets<a class="anchor" aria-label="anchor" href="#inspect-the-data-sets"></a>
+</h3>
+<p>Next we will check the data by printing information that needs to be declared in the meta data.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/print_data_structure.html">print_data_structure</a></span><span class="op">(</span><span class="va">example_participant_data_checked</span>, <span class="va">example_participant_data_checked</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; --- Dataset 1 ---</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; variable: participant_id </span></span>
+<span><span class="co">#&gt; Type: character </span></span>
+<span><span class="co">#&gt; Unique values: sub-1, sub-2, sub-3 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; variable: sex </span></span>
+<span><span class="co">#&gt; Type: character </span></span>
+<span><span class="co">#&gt; Unique values: m, f, o </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; variable: age </span></span>
+<span><span class="co">#&gt; Type: numeric </span></span>
+<span><span class="co">#&gt; Range: 21 - 32 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; --- Dataset 2 ---</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; variable: participant_id </span></span>
+<span><span class="co">#&gt; Type: character </span></span>
+<span><span class="co">#&gt; Unique values: sub-1, sub-2, sub-3 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; variable: sex </span></span>
+<span><span class="co">#&gt; Type: character </span></span>
+<span><span class="co">#&gt; Unique values: m, f, o </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; variable: age </span></span>
+<span><span class="co">#&gt; Type: numeric </span></span>
+<span><span class="co">#&gt; Range: 21 - 32</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="write-the-meta-data">Write the meta data<a class="anchor" aria-label="anchor" href="#write-the-meta-data"></a>
+</h3>
+<p>Fist create a meta data object…</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">meta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_meta_data.html">create_meta_data</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Then we add variables, one by one…</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#describe the first variable</span></span>
+<span><span class="va">meta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_meta_data.html">add_meta_data</a></span><span class="op">(</span>meta_data <span class="op">=</span> <span class="va">meta_data</span>, </span>
+<span>                           variable_name <span class="op">=</span> <span class="st">"participant_id"</span>, </span>
+<span>                           Description <span class="op">=</span> <span class="st">"Unique participant identifier in the format sub-X."</span>,</span>
+<span>                           Levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"sub-1"</span> <span class="op">=</span> <span class="st">"Participant 1"</span>, </span>
+<span>                                         <span class="st">"sub-2"</span> <span class="op">=</span> <span class="st">"Participant 2"</span>,</span>
+<span>                                         <span class="st">"sub-3"</span> <span class="op">=</span> <span class="st">"Participant 3"</span><span class="op">)</span></span>
+<span>                           <span class="op">)</span></span>
+<span></span>
+<span><span class="va">meta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_meta_data.html">add_meta_data</a></span><span class="op">(</span>meta_data <span class="op">=</span> <span class="va">meta_data</span>, </span>
+<span>                           variable_name <span class="op">=</span> <span class="st">"sex"</span>, </span>
+<span>                           Description <span class="op">=</span> <span class="st">"Self-reported sex of the participant."</span>,</span>
+<span>                           Levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"m"</span> <span class="op">=</span> <span class="st">"Male"</span>, <span class="st">"f"</span> <span class="op">=</span> <span class="st">"Female"</span>, <span class="st">"o"</span> <span class="op">=</span> <span class="st">"Other"</span><span class="op">)</span></span>
+<span>                           <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ... and the next</span></span>
+<span><span class="va">meta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_meta_data.html">add_meta_data</a></span><span class="op">(</span>meta_data <span class="op">=</span> <span class="va">meta_data</span>, </span>
+<span>                           variable_name <span class="op">=</span> <span class="st">"response_time"</span>, </span>
+<span>                           Description <span class="op">=</span> <span class="st">"Response time of the participant in the task."</span>,</span>
+<span>                           Units <span class="op">=</span> <span class="st">"milliseconds"</span>, </span>
+<span>                           Type<span class="op">=</span><span class="st">"numeric"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ... do this for all variables. Note that you can add as many fiels as you wish (here: Units, and Type)</span></span></code></pre></div>
+<p>Lets, have a look at the object</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">meta_data</span></span>
+<span><span class="co">#&gt; $participant_id</span></span>
+<span><span class="co">#&gt; $participant_id$Description</span></span>
+<span><span class="co">#&gt; [1] "Unique participant identifier in the format sub-X."</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $participant_id$Levels</span></span>
+<span><span class="co">#&gt; $participant_id$Levels$`sub-1`</span></span>
+<span><span class="co">#&gt; [1] "Participant 1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $participant_id$Levels$`sub-2`</span></span>
+<span><span class="co">#&gt; [1] "Participant 2"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $participant_id$Levels$`sub-3`</span></span>
+<span><span class="co">#&gt; [1] "Participant 3"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $sex</span></span>
+<span><span class="co">#&gt; $sex$Description</span></span>
+<span><span class="co">#&gt; [1] "Self-reported sex of the participant."</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $sex$Levels</span></span>
+<span><span class="co">#&gt; $sex$Levels$m</span></span>
+<span><span class="co">#&gt; [1] "Male"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $sex$Levels$f</span></span>
+<span><span class="co">#&gt; [1] "Female"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $sex$Levels$o</span></span>
+<span><span class="co">#&gt; [1] "Other"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $response_time</span></span>
+<span><span class="co">#&gt; $response_time$Description</span></span>
+<span><span class="co">#&gt; [1] "Response time of the participant in the task."</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $response_time$Units</span></span>
+<span><span class="co">#&gt; [1] "milliseconds"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $response_time$Type</span></span>
+<span><span class="co">#&gt; [1] "numeric"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "metadata"</span></span></code></pre></div>
+<p>As you can see, the meta data is nothing else than a list (with a class “metadata”). If you feel comfortable with writing long lists, you can also write the meta data without the “add_meta_data” function as a list directly.</p>
+<div class="section level4">
+<h4 id="check-completeness-of-the-meta-data">Check completeness of the meta data<a class="anchor" aria-label="anchor" href="#check-completeness-of-the-meta-data"></a>
+</h4>
+<p>Next, we should ensure that the variables declared in the meta data match the ones in our data. There is a function to do that. It takes the created meta data and as many data frames as you wish (the ones that you use, i.e., task data and participant data).</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/check_meta_data.html">check_meta_data</a></span><span class="op">(</span>meta_data <span class="op">=</span> <span class="va">meta_data</span>, <span class="va">example_task_data_checked</span>, <span class="va">example_participant_data_checked</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 🔍 Validating meta_data against data...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ✔ participant_id ...ok</span></span>
+<span><span class="co">#&gt; ✔ sex ...ok</span></span>
+<span><span class="co">#&gt; ✔ response_time ...ok</span></span>
+<span><span class="co">#&gt; Warning in check_meta_data(meta_data = meta_data, example_task_data_checked, :</span></span>
+<span><span class="co">#&gt; ⚠ Variable session found in data but not declared in meta_data.</span></span>
+<span><span class="co">#&gt; Warning in check_meta_data(meta_data = meta_data, example_task_data_checked, :</span></span>
+<span><span class="co">#&gt; ⚠ Variable accuracy found in data but not declared in meta_data.</span></span>
+<span><span class="co">#&gt; Warning in check_meta_data(meta_data = meta_data, example_task_data_checked, :</span></span>
+<span><span class="co">#&gt; ⚠ Variable age found in data but not declared in meta_data.</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="write-bids-file">Write BIDS file<a class="anchor" aria-label="anchor" href="#write-bids-file"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/write_task_tsv.html">write_task_tsv</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">example_data_checked</span>, bids_dir <span class="op">=</span> <span class="st">"example_bids"</span>, </span>
+<p>You should fix all these issues first, however, for demonstration purposes, we will ignore them for now and move on to writing the BIDS structure despite the unresolved issues…</p>
+<div class="section level4">
+<h4 id="write-tasktsv-files">Write task.tsv files<a class="anchor" aria-label="anchor" href="#write-tasktsv-files"></a>
+</h4>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/write_task_tsv.html">write_task_tsv</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">example_task_data_checked</span>, bids_dir <span class="op">=</span> <span class="st">"example_bids"</span>, </span>
 <span>               data_type <span class="op">=</span> <span class="st">"beh"</span>, </span>
 <span>               filename_prefixes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-"</span>, <span class="st">"ses-"</span>, <span class="st">"task-"</span><span class="op">)</span>, </span>
 <span>               filename_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"session"</span>, <span class="st">"reaction"</span><span class="op">=</span><span class="st">"task"</span><span class="op">)</span>,</span>
@@ -148,20 +307,58 @@
 <span>               path_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"session"</span><span class="op">)</span>, </span>
 <span>               ignore_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"sex"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Variable task does not exist in the data and will be imputed as reaction</span></span>
-<span><span class="co">#&gt; Main BIDS directory successfully created: example_bids</span></span>
-<span><span class="co">#&gt; Folder successfully created: example_bids/sub-1/ses-1</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-1/ses-1/sub-1_ses-1_task-reaction_beh.tsv</span></span>
-<span><span class="co">#&gt; Folder successfully created: example_bids/sub-2/ses-1</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-2/ses-1/sub-2_ses-1_task-reaction_beh.tsv</span></span>
-<span><span class="co">#&gt; Folder successfully created: example_bids/sub-3/ses-1</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-3/ses-1/sub-3_ses-1_task-reaction_beh.tsv</span></span>
-<span><span class="co">#&gt; Folder successfully created: example_bids/sub-1/ses-2</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-1/ses-2/sub-1_ses-2_task-reaction_beh.tsv</span></span>
-<span><span class="co">#&gt; Folder successfully created: example_bids/sub-2/ses-2</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-2/ses-2/sub-2_ses-2_task-reaction_beh.tsv</span></span>
-<span><span class="co">#&gt; Folder successfully created: example_bids/sub-3/ses-2</span></span>
-<span><span class="co">#&gt; Task data saved: example_bids/sub-3/ses-2/sub-3_ses-2_task-reaction_beh.tsv</span></span></code></pre></div>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-1/ses-01/beh/sub-1_ses-01_task-reaction_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-2/ses-01/beh/sub-2_ses-01_task-reaction_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-3/ses-01/beh/sub-3_ses-01_task-reaction_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-1/ses-02/beh/sub-1_ses-02_task-reaction_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-2/ses-02/beh/sub-2_ses-02_task-reaction_beh.tsv</span></span>
+<span><span class="co">#&gt; Task data saved: example_bids/sub-3/ses-02/beh/sub-3_ses-02_task-reaction_beh.tsv</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="write-participantstsv-files">Write participants.tsv files<a class="anchor" aria-label="anchor" href="#write-participantstsv-files"></a>
+</h4>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/write_participants_tsv.html">write_participants_tsv</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">example_participant_data_checked</span>,</span>
+<span>                         bids_dir <span class="op">=</span> <span class="st">"example_bids"</span>, include_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"sex"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Participants data saved: example_bids/participants.tsv</span></span></code></pre></div>
+<p>Please note that this function can also be repurposed to write other kinds of tsv files (like sessions.tsv).</p>
+</div>
+<div class="section level4">
+<h4 id="write-the-meta-data-1">Write the meta data<a class="anchor" aria-label="anchor" href="#write-the-meta-data-1"></a>
+</h4>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/write_meta_data.html">write_meta_data</a></span><span class="op">(</span>meta_data <span class="op">=</span> <span class="va">meta_data</span>, bids_dir <span class="op">=</span> <span class="st">"example_bids"</span>, task_name <span class="op">=</span> <span class="st">"RT_Task"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metadata JSON saved: example_bids/task-RT_Task_beh.json</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="inspect-the-created-bids-directory">Inspect the created BIDS directory<a class="anchor" aria-label="anchor" href="#inspect-the-created-bids-directory"></a>
+</h4>
 <p>The resulting output looks like that: <img src="reference/figures/folder_stucture.jpeg" alt="folder structure" width="100%" align="left"></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="load-the-data">Load the data<a class="anchor" aria-label="anchor" href="#load-the-data"></a>
+</h3>
+<p>You can also load data from a created BIDS directory into R. This is also a great check whether things went wel…</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">example_data_imported</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_bids.html">read_bids</a></span><span class="op">(</span>bids_dir <span class="op">=</span> <span class="st">"example_bids"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Task data loaded from all task files.</span></span>
+<span><span class="co">#&gt; Participants data loaded from: example_bids/participants.tsv</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">example_data_imported</span><span class="op">$</span><span class="va">task_data</span></span>
+<span><span class="co">#&gt;   participant session response_time accuracy</span></span>
+<span><span class="co">#&gt; 1       sub-1  ses-01           350        1</span></span>
+<span><span class="co">#&gt; 2       sub-1  ses-02           415        1</span></span>
+<span><span class="co">#&gt; 3       sub-2  ses-01           400        0</span></span>
+<span><span class="co">#&gt; 4       sub-2  ses-02           372        1</span></span>
+<span><span class="co">#&gt; 5       sub-3  ses-01           375        1</span></span>
+<span><span class="co">#&gt; 6       sub-3  ses-02           401        1</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">example_data_imported</span><span class="op">$</span><span class="va">participants</span></span>
+<span><span class="co">#&gt;   participant_id sex age</span></span>
+<span><span class="co">#&gt; 1          sub-1   m  21</span></span>
+<span><span class="co">#&gt; 2          sub-2   f  32</span></span>
+<span><span class="co">#&gt; 3          sub-3   o  27</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

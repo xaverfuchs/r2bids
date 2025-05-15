@@ -28,10 +28,28 @@
     <loc>https://xaverfuchs.github.io/r2bids/reference/B006Data.html</loc>
   </url>
   <url>
+    <loc>https://xaverfuchs.github.io/r2bids/reference/add_meta_data.html</loc>
+  </url>
+  <url>
     <loc>https://xaverfuchs.github.io/r2bids/reference/check_input_data.html</loc>
   </url>
   <url>
+    <loc>https://xaverfuchs.github.io/r2bids/reference/check_meta_data.html</loc>
+  </url>
+  <url>
+    <loc>https://xaverfuchs.github.io/r2bids/reference/check_participant_data.html</loc>
+  </url>
+  <url>
+    <loc>https://xaverfuchs.github.io/r2bids/reference/check_task_data.html</loc>
+  </url>
+  <url>
+    <loc>https://xaverfuchs.github.io/r2bids/reference/create_meta_data.html</loc>
+  </url>
+  <url>
     <loc>https://xaverfuchs.github.io/r2bids/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://xaverfuchs.github.io/r2bids/reference/print_data_structure.html</loc>
   </url>
   <url>
     <loc>https://xaverfuchs.github.io/r2bids/reference/read_bids.html</loc>
@@ -41,6 +59,9 @@
   </url>
   <url>
     <loc>https://xaverfuchs.github.io/r2bids/reference/write_bids.html</loc>
+  </url>
+  <url>
+    <loc>https://xaverfuchs.github.io/r2bids/reference/write_meta_data.html</loc>
   </url>
   <url>
     <loc>https://xaverfuchs.github.io/r2bids/reference/write_metadata.html</loc>

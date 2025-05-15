@@ -7,8 +7,8 @@
 read_bids(
   bids_dir,
   data_type = "beh",
-  filename_variables = c("sub-", "ses-"),
-  variable_names = c("participant", "session"),
+  filename_prefixes = c("sub-", "ses-"),
+  filename_variables = c("participant", "session"),
   strip_prefixes = F
 )
 }
@@ -17,9 +17,9 @@ read_bids(
 
 \item{data_type}{A string defining the data_type for the task files. In BIDS it is usually "events" or "beh" (the default) for "behavior".}
 
-\item{filename_variables}{A character string defining the variables that are contained in the data file name and that should then appear as columns in the data. Default is c("sub-", "ses-") assuming that the file name will at least contain the participant code and the session.}
+\item{filename_prefixes}{A character string defining the variables that are contained in the data file name and that should then appear as columns in the data. Default is c("sub-", "ses-") assuming that the file name will at least contain the participant code and the session.}
 
-\item{variable_names}{A character string defining how the variables defined in 'filename_variables' should be called in the data Default is c("participant", "session").}
+\item{filename_variables}{A character string defining how the variables defined in 'filename_prefixes' should be called in the data Default is c("participant", "session").}
 
 \item{strip_prefixes}{Defines whether or not prefixes like "sub-" should be stripped or maintained. Default is FALSE which would maintain the prefixes.}
 }
@@ -39,7 +39,7 @@ data <- data.frame(participant_id = c("sub-1", "sub-1", "sub-2", "sub-2"),
                    response_time = c(100, 200, 150, 180))
 
 write_task_tsv(data, bids_dir = "BIDS", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
-               filename_variables = c("participant_id", "session", "RTTask"="task", "run"), ignore_variables =  c("age", "sex"))
+               filename_prefixes = c("participant_id", "session", "RTTask"="task", "run"), ignore_variables =  c("age", "sex"))
 write_participants_tsv(data, bids_dir = "BIDS", include_variables = c("participant_id", "age", "sex"))
 read_bids(bids_dir = "BIDS")
 }

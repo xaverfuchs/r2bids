@@ -2,10 +2,10 @@
 #'
 #' This function creates a BIDS-compliant JSON metadata file for the task data.
 #'
+#' @param meta_data A named list containing metadata about the behavioral task.
 #' @param bids_dir The directory where the BIDS metadata file will be saved.
 #' @param task_name The name of the task to include in the JSON filename.
 #' @param data_type The data type  to include in the JSON filename. Default is "beh".
-#' @param meta_data A named list containing metadata about the behavioral task.
 #'
 #' @return This function does not return anything but writes a JSON file to the output directory.
 #' @export
@@ -14,8 +14,13 @@
 #' meta_data <- list(response_time = list(Description = "Response time in milliseconds", Units = "ms"))
 #' write_metadata(bids_dir = "bids_dir", task_name = "RTTask", data_type = "beh", meta_data = meta_data)
 #'
-write_metadata <- function(bids_dir, task_name, data_type = "beh", meta_data) {
+write_meta_data <- function(meta_data, bids_dir, task_name, data_type = "beh") {
   json_file <- file.path(bids_dir, sprintf("task-%s_%s.json", task_name, data_type))
+
+  # In case the meta_data is an object of class "meta_data", remove class to make it writable
+  if (class(meta_data)=="metadata") {
+    meta_data <- unclass(meta_data)
+  }
 
   # Try to write metadata as a JSON file
   tryCatch({

@@ -18,7 +18,7 @@ write_participants_tsv(
 
 \item{data_type}{A string defining the data_type for the task files. Default is "participants" which will write a participants.tsv. You could however also repurpose this function to write another tsv file to contain information, for example a "session.tsv".}
 
-\item{include_variables.}{A character vector with the variables that shluld make it into the file. Default is c("participant_id") but in reality it would rather be something like c("participant_id", "age", "sex").}
+\item{include_variables}{A character vector with the variables that should make it into the file. Default is c("participant_id") but in reality it would rather be something like c("participant_id", "age", "sex").}
 }
 \value{
 This function does not return anything but writes files to the output directory.

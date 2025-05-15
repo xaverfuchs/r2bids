@@ -5,7 +5,7 @@
 #' @param data A data frame containing the participant information.
 #' @param bids_dir The directory where the BIDS data set will be saved.
 #' @param data_type A string defining the data_type for the task files. Default is "participants" which will write a participants.tsv. You could however also repurpose this function to write another tsv file to contain information, for example a "session.tsv".
-#' @param include_variables. A character vector with the variables that shluld make it into the file. Default is c("participant_id") but in reality it would rather be something like c("participant_id", "age", "sex").
+#' @param include_variables A character vector with the variables that should make it into the file. Default is c("participant_id") but in reality it would rather be something like c("participant_id", "age", "sex").
 #'
 #' @return This function does not return anything but writes files to the output directory.
 #' @export

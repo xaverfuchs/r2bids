@@ -14,6 +14,7 @@ usethis::use_vignette("B_Example_with_real_data") # Authoring vignettes
 usethis::use_r("a function or dataset.R") # Authoring function
 usethis::use_data(B006Data) #associates a data set with the package
 
+usethis::use_r("validate_meta_data.R") # Authoring function
 
 #Part 3: Sticker creation
 library(hexSticker)

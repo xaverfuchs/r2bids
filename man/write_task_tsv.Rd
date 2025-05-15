@@ -33,7 +33,7 @@ write_task_tsv(
 
 \item{ignore_variables=c()}{A character vector of variables to explicitly exclude from the tsv file. If data contains participant information variables, they can be defined here as a character vector, for example as ignore_variables =  c("age", "sex").}
 
-\item{include_variables=c()}{A character vector of variables to explicitly exclude from the tsv file.}
+\item{include_variables=c()}{A character vector of variables to explicitly include in the tsv file. This can be useful in case you want to keep one of the variables that end up in the file name in the data.}
 }
 \value{
 This function does not return anything but writes files to the output directory.

@@ -21,13 +21,6 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/A_Example_with_toy_data.html">BIDS conversion example with toy data</a>
-    <a class="dropdown-item" href="../articles/B_Example_with_real_data.html">BIDS conversion example with data from a tactile perception study (B006)</a>
-  </div>
-</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -71,8 +64,8 @@
 <dd><p>A string defining the data_type for the task files. Default is "participants" which will write a participants.tsv. You could however also repurpose this function to write another tsv file to contain information, for example a "session.tsv".</p></dd>
 
 
-<dt>include_variables.</dt>
-<dd><p>A character vector with the variables that shluld make it into the file. Default is c("participant_id") but in reality it would rather be something like c("participant_id", "age", "sex").</p></dd>
+<dt>include_variables</dt>
+<dd><p>A character vector with the variables that should make it into the file. Default is c("participant_id") but in reality it would rather be something like c("participant_id", "age", "sex").</p></dd>
 
 </dl></div>
     <div class="section level2">

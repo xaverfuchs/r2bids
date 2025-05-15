@@ -23,13 +23,6 @@ It handles cases where session folders are present as well as cases where there 
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/A_Example_with_toy_data.html">BIDS conversion example with toy data</a>
-    <a class="dropdown-item" href="../articles/B_Example_with_real_data.html">BIDS conversion example with data from a tactile perception study (B006)</a>
-  </div>
-</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -55,8 +48,8 @@ It handles cases where session folders are present as well as cases where there 
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_bids</span><span class="op">(</span></span>
 <span>  <span class="va">bids_dir</span>,</span>
 <span>  data_type <span class="op">=</span> <span class="st">"beh"</span>,</span>
-<span>  filename_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-"</span>, <span class="st">"ses-"</span><span class="op">)</span>,</span>
-<span>  variable_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant"</span>, <span class="st">"session"</span><span class="op">)</span>,</span>
+<span>  filename_prefixes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-"</span>, <span class="st">"ses-"</span><span class="op">)</span>,</span>
+<span>  filename_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant"</span>, <span class="st">"session"</span><span class="op">)</span>,</span>
 <span>  strip_prefixes <span class="op">=</span> <span class="cn">F</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -71,12 +64,12 @@ It handles cases where session folders are present as well as cases where there 
 <dd><p>A string defining the data_type for the task files. In BIDS it is usually "events" or "beh" (the default) for "behavior".</p></dd>
 
 
-<dt>filename_variables</dt>
+<dt>filename_prefixes</dt>
 <dd><p>A character string defining the variables that are contained in the data file name and that should then appear as columns in the data. Default is c("sub-", "ses-") assuming that the file name will at least contain the participant code and the session.</p></dd>
 
 
-<dt>variable_names</dt>
-<dd><p>A character string defining how the variables defined in 'filename_variables' should be called in the data Default is c("participant", "session").</p></dd>
+<dt>filename_variables</dt>
+<dd><p>A character string defining how the variables defined in 'filename_prefixes' should be called in the data Default is c("participant", "session").</p></dd>
 
 
 <dt>strip_prefixes</dt>
@@ -100,17 +93,8 @@ It handles cases where session folders are present as well as cases where there 
 <span class="r-in"><span>                   response_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">150</span>, <span class="fl">180</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="write_task_tsv.html">write_task_tsv</a></span><span class="op">(</span><span class="va">data</span>, bids_dir <span class="op">=</span> <span class="st">"BIDS"</span>, filename_prefixes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-"</span>, <span class="st">"ses-"</span>, <span class="st">"task-"</span>, <span class="st">"run-"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>               filename_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"session"</span>, <span class="st">"RTTask"</span><span class="op">=</span><span class="st">"task"</span>, <span class="st">"run"</span><span class="op">)</span>, ignore_variables <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"sex"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Variable task does not exist in the data and will be imputed as RTTask</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Main BIDS directory successfully created: BIDS</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Folder successfully created: BIDS/sub-1/ses-1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: BIDS/sub-1/ses-1/sub-1_ses-1_task-RTTask_run-1_beh.tsv</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Folder successfully created: BIDS/sub-1/ses-2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: BIDS/sub-1/ses-2/sub-1_ses-2_task-RTTask_run-1_beh.tsv</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Folder successfully created: BIDS/sub-2/ses-1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: BIDS/sub-2/ses-1/sub-2_ses-1_task-RTTask_run-1_beh.tsv</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Folder successfully created: BIDS/sub-2/ses-2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: BIDS/sub-2/ses-2/sub-2_ses-2_task-RTTask_run-1_beh.tsv</span>
+<span class="r-in"><span>               filename_prefixes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"session"</span>, <span class="st">"RTTask"</span><span class="op">=</span><span class="st">"task"</span>, <span class="st">"run"</span><span class="op">)</span>, ignore_variables <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"sex"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in write_task_tsv(data, bids_dir = "BIDS", filename_prefixes = c("sub-",     "ses-", "task-", "run-"), filename_prefixes = c("participant_id",     "session", RTTask = "task", "run"), ignore_variables = c("age",     "sex")):</span> formal argument "filename_prefixes" matched by multiple actual arguments</span>
 <span class="r-in"><span><span class="fu"><a href="write_participants_tsv.html">write_participants_tsv</a></span><span class="op">(</span><span class="va">data</span>, bids_dir <span class="op">=</span> <span class="st">"BIDS"</span>, include_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"age"</span>, <span class="st">"sex"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Participants data saved: BIDS/participants.tsv</span>
 <span class="r-in"><span><span class="fu">read_bids</span><span class="op">(</span>bids_dir <span class="op">=</span> <span class="st">"BIDS"</span><span class="op">)</span></span></span>
@@ -124,9 +108,13 @@ It handles cases where session folders are present as well as cases where there 
 <span class="r-out co"><span class="r-pr">#&gt;</span> $task_data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   participant session response_time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       sub-1   ses-1           100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       sub-1   ses-2           200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       sub-2   ses-1           150</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       sub-2   ses-2           180</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       sub-1   ses-1           100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       sub-1   ses-2           200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       sub-1   ses-2           200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       sub-2   ses-1           150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       sub-2   ses-1           150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       sub-2   ses-2           180</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       sub-2   ses-2           180</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
