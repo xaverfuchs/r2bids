@@ -41,14 +41,14 @@ check_meta_data <- function(meta_data, ..., ignore_variables=c("session", "task"
     if (var %in% all_data_vars) {
       cat("✔", var, "...ok\n")
     } else {
-      warning(paste("⚠ Variable", var, "declared in meta_data but not found in any dataset."))
+      warning(paste("⚠ Variable", var, "declared in meta_data but not found in any dataset.\n"))
     }
   }
 
   # Check for data variables missing in meta_data
   for (var in all_data_vars) {
     if (!(var %in% meta_vars)) {
-      warning(paste("⚠ Variable", var, "found in data but not declared in meta_data."))
+      warning(paste("⚠ Variable", var, "found in data but not declared in meta_data.\n"))
     }
   }
 }

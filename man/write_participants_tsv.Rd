@@ -8,7 +8,7 @@ write_participants_tsv(
   data,
   bids_dir,
   data_type = "participants",
-  include_variables = c("participant_id")
+  exclude_variables = c()
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ write_participants_tsv(
 
 \item{data_type}{A string defining the data_type for the task files. Default is "participants" which will write a participants.tsv. You could however also repurpose this function to write another tsv file to contain information, for example a "session.tsv".}
 
-\item{include_variables}{A character vector with the variables that should make it into the file. Default is c("participant_id") but in reality it would rather be something like c("participant_id", "age", "sex").}
+\item{exclude_variables}{A character vector with the variables that should not make it into the file.}
 }
 \value{
 This function does not return anything but writes files to the output directory.
@@ -33,5 +33,5 @@ data <- data.frame(participant_id = c("sub-1", "sub-1", "sub-2", "sub-2"),
                    age = c(25, 25, 30, 30),
                    sex = c('m', 'm', 'f', 'f'),
                    response_time = c(100, 200, 150, 180))
-write_participants_tsv(data, bids_dir = "BIDS", include_variables = c("participant_id", "age", "sex"))
+write_participants_tsv(data, bids_dir = "BIDS")
 }

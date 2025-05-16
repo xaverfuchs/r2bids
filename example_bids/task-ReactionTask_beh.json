@@ -7,13 +7,10 @@
       "sub-3": "Participant 3"
     }
   },
-  "sex": {
-    "Description": "Self-reported sex of the participant.",
-    "Levels": {
-      "m": "Male",
-      "f": "Female",
-      "o": "Other"
-    }
+  "percent_correct": {
+    "Description": "Percentage of correct responses of the participant in the task.",
+    "Units": "percent",
+    "Type": "numeric"
   },
   "response_time": {
     "Description": "Response time of the participant in the task.",

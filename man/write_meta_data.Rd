@@ -4,16 +4,21 @@
 \alias{write_meta_data}
 \title{Write BIDS JSON Metadata}
 \usage{
-write_meta_data(meta_data, bids_dir, task_name, data_type = "beh")
+write_meta_data(
+  meta_data,
+  bids_dir,
+  task_name = NULL,
+  data_type = c("beh", "participants")
+)
 }
 \arguments{
 \item{meta_data}{A named list containing metadata about the behavioral task.}
 
 \item{bids_dir}{The directory where the BIDS metadata file will be saved.}
 
-\item{task_name}{The name of the task to include in the JSON filename.}
+\item{task_name}{The name of the task to include in the task JSON filename. Default is NULL, which will not add a "task-task_name" prefix.}
 
-\item{data_type}{The data type  to include in the JSON filename. Default is "beh".}
+\item{data_type}{The data type to include in the JSON filename. Can be "beh", "participants" or any other prefix.}
 }
 \value{
 This function does not return anything but writes a JSON file to the output directory.

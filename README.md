@@ -172,19 +172,22 @@ print_data_structure(example_task_data_checked, example_participant_data_checked
 #> Range: 21 - 32
 ```
 
-### Write the meta data
+### Define and write the meta data
 
-Fist create a meta data object…
+In the following, we will create to pieces of meta data: one for the
+task description and one for the participants description.
+
+#### Task meta data
 
 ``` r
-meta_data <- create_meta_data()
+meta_data_task <- create_meta_data()
 ```
 
 Then we add variables, one by one…
 
 ``` r
 #describe the first variable
-meta_data <- add_meta_data(meta_data = meta_data, 
+meta_data_task <- add_meta_data(meta_data = meta_data_task, 
                            variable_name = "participant_id", 
                            Description = "Unique participant identifier in the format sub-X.",
                            Levels = list("sub-1" = "Participant 1", 
@@ -192,26 +195,25 @@ meta_data <- add_meta_data(meta_data = meta_data,
                                          "sub-3" = "Participant 3")
                            )
 
-meta_data <- add_meta_data(meta_data = meta_data, 
-                           variable_name = "sex", 
-                           Description = "Self-reported sex of the participant.",
-                           Levels = list("m" = "Male", "f" = "Female", "o" = "Other")
-                           )
+#add one variable that does not exist (just for demonstration purposes)
+meta_data_task <- add_meta_data(meta_data = meta_data_task, 
+                           variable_name = "percent_correct", 
+                           Description = "Percentage of correct responses of the participant in the task.",
+                           Units = "percent", 
+                           Type="numeric")
 
-# ... and the next
-meta_data <- add_meta_data(meta_data = meta_data, 
+# ... do this for all variables. Note that you can add as many fiels as you wish (here: Units, and Type)
+meta_data_task <- add_meta_data(meta_data = meta_data_task, 
                            variable_name = "response_time", 
                            Description = "Response time of the participant in the task.",
                            Units = "milliseconds", 
                            Type="numeric")
-
-# ... do this for all variables. Note that you can add as many fiels as you wish (here: Units, and Type)
 ```
 
 Lets, have a look at the object
 
 ``` r
-meta_data
+meta_data_task
 #> $participant_id
 #> $participant_id$Description
 #> [1] "Unique participant identifier in the format sub-X."
@@ -228,20 +230,15 @@ meta_data
 #> 
 #> 
 #> 
-#> $sex
-#> $sex$Description
-#> [1] "Self-reported sex of the participant."
+#> $percent_correct
+#> $percent_correct$Description
+#> [1] "Percentage of correct responses of the participant in the task."
 #> 
-#> $sex$Levels
-#> $sex$Levels$m
-#> [1] "Male"
+#> $percent_correct$Units
+#> [1] "percent"
 #> 
-#> $sex$Levels$f
-#> [1] "Female"
-#> 
-#> $sex$Levels$o
-#> [1] "Other"
-#> 
+#> $percent_correct$Type
+#> [1] "numeric"
 #> 
 #> 
 #> $response_time
@@ -264,6 +261,30 @@ As you can see, the meta data is nothing else than a list (with a class
 also write the meta data without the “add_meta_data” function as a list
 directly.
 
+#### Participants meta data
+
+We will proceed accordingly…
+
+``` r
+meta_data_participants <- create_meta_data()
+
+# create again the participants identifier
+meta_data_participants <- add_meta_data(meta_data = meta_data_participants, 
+                           variable_name = "participant_id", 
+                           Description = "Unique participant identifier in the format sub-X.",
+                           Levels = list("sub-1" = "Participant 1", 
+                                         "sub-2" = "Participant 2",
+                                         "sub-3" = "Participant 3")
+                           )
+
+# ... and the next
+meta_data_participants <- add_meta_data(meta_data = meta_data_participants, 
+                           variable_name = "sex", 
+                           Description = "Self-reported sex of the participant.",
+                           Levels = list("m" = "Male", "f" = "Female", "o" = "Other")
+                           )
+```
+
 #### Check completeness of the meta data
 
 Next, we should ensure that the variables declared in the meta data
@@ -272,16 +293,22 @@ created meta data and as many data frames as you wish (the ones that you
 use, i.e., task data and participant data).
 
 ``` r
-check_meta_data(meta_data = meta_data, example_task_data_checked, example_participant_data_checked)
+check_meta_data(meta_data = meta_data_task, example_task_data_checked)
+#> 🔍 Validating meta_data against data...
+#> 
+#> ✔ participant_id ...ok
+#> Warning in check_meta_data(meta_data = meta_data_task, example_task_data_checked): ⚠ Variable percent_correct declared in meta_data but not found in any dataset.
+#> ✔ response_time ...ok
+#> Warning in check_meta_data(meta_data = meta_data_task, example_task_data_checked): ⚠ Variable accuracy found in data but not declared in meta_data.
+```
+
+``` r
+check_meta_data(meta_data = meta_data_participants, example_participant_data_checked)
 #> 🔍 Validating meta_data against data...
 #> 
 #> ✔ participant_id ...ok
 #> ✔ sex ...ok
-#> ✔ response_time ...ok
-#> Warning in check_meta_data(meta_data = meta_data, example_task_data_checked, :
-#> ⚠ Variable accuracy found in data but not declared in meta_data.
-#> Warning in check_meta_data(meta_data = meta_data, example_task_data_checked, :
-#> ⚠ Variable age found in data but not declared in meta_data.
+#> Warning in check_meta_data(meta_data = meta_data_participants, example_participant_data_checked): ⚠ Variable age found in data but not declared in meta_data.
 ```
 
 ### Write BIDS file
@@ -301,11 +328,18 @@ write_task_tsv(data = example_task_data_checked, bids_dir = "example_bids",
                path_variables = c("participant_id", "session"), 
                ignore_variables = c("age", "sex"))
 #> Variable task does not exist in the data and will be imputed as reaction
+#> Main BIDS directory successfully created: example_bids
+#> Folder successfully created: example_bids/sub-1/ses-01/beh
 #> Task data saved: example_bids/sub-1/ses-01/beh/sub-1_ses-01_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-2/ses-01/beh
 #> Task data saved: example_bids/sub-2/ses-01/beh/sub-2_ses-01_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-3/ses-01/beh
 #> Task data saved: example_bids/sub-3/ses-01/beh/sub-3_ses-01_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-1/ses-02/beh
 #> Task data saved: example_bids/sub-1/ses-02/beh/sub-1_ses-02_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-2/ses-02/beh
 #> Task data saved: example_bids/sub-2/ses-02/beh/sub-2_ses-02_task-reaction_beh.tsv
+#> Folder successfully created: example_bids/sub-3/ses-02/beh
 #> Task data saved: example_bids/sub-3/ses-02/beh/sub-3_ses-02_task-reaction_beh.tsv
 ```
 
@@ -313,7 +347,7 @@ write_task_tsv(data = example_task_data_checked, bids_dir = "example_bids",
 
 ``` r
 write_participants_tsv(data = example_participant_data_checked,
-                         bids_dir = "example_bids", include_variables = c("participant_id", "sex", "age"))
+                         bids_dir = "example_bids")
 #> Participants data saved: example_bids/participants.tsv
 ```
 
@@ -322,9 +356,20 @@ kinds of tsv files (like sessions.tsv).
 
 #### Write the meta data
 
+Here we need to define which kind of meta data we want to write. Let’s
+start with the task json.
+
 ``` r
-write_meta_data(meta_data = meta_data, bids_dir = "example_bids", task_name = "RT_Task")
-#> Metadata JSON saved: example_bids/task-RT_Task_beh.json
+write_meta_data(meta_data = meta_data_task, bids_dir = "example_bids", task_name = "ReactionTask", data_type = "beh")
+#> Metadata JSON saved: example_bids/task-ReactionTask_beh.json
+```
+
+Next we will write the participants.json by changging the arguments of
+the function.
+
+``` r
+write_meta_data(meta_data = meta_data_participants, bids_dir = "example_bids", data_type = "participants")
+#> Metadata JSON saved: example_bids/participants.json
 ```
 
 #### Inspect the created BIDS directory
