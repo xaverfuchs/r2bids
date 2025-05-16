@@ -115,7 +115,15 @@ meta_data_task <- create_meta_data()
 
 Then we add variables, one by one...
 ```{r}
-#describe the first variable
+#we should provide a TaskName and a TaskDescription variable first. Note that we just provide a name and a string...
+meta_data_task <- add_meta_data(meta_data = meta_data_task, 
+                           variable_name = "TaskName", "ReactionTask")
+
+meta_data_task <- add_meta_data(meta_data = meta_data_task, 
+                           variable_name = "TaskDescription", 
+                           "Reaction time task in which participants press a button as fast as possible.")
+
+#describe the first variable of the data set
 meta_data_task <- add_meta_data(meta_data = meta_data_task, 
                            variable_name = "participant_id", 
                            Description = "Unique participant identifier in the format sub-X.",

@@ -186,7 +186,15 @@ meta_data_task <- create_meta_data()
 Then we add variables, one by one…
 
 ``` r
-#describe the first variable
+#we should provide a TaskName and a TaskDescription variable first. Note that we just provide a name and a string...
+meta_data_task <- add_meta_data(meta_data = meta_data_task, 
+                           variable_name = "TaskName", "ReactionTask")
+
+meta_data_task <- add_meta_data(meta_data = meta_data_task, 
+                           variable_name = "TaskDescription", 
+                           "Reaction time task in which participants press a button as fast as possible.")
+
+#describe the first variable of the data set
 meta_data_task <- add_meta_data(meta_data = meta_data_task, 
                            variable_name = "participant_id", 
                            Description = "Unique participant identifier in the format sub-X.",
@@ -214,6 +222,12 @@ Lets, have a look at the object
 
 ``` r
 meta_data_task
+#> $TaskName
+#> [1] "ReactionTask"
+#> 
+#> $TaskDescription
+#> [1] "Reaction time task in which participants press a button as fast as possible."
+#> 
 #> $participant_id
 #> $participant_id$Description
 #> [1] "Unique participant identifier in the format sub-X."
@@ -295,7 +309,8 @@ use, i.e., task data and participant data).
 ``` r
 check_meta_data(meta_data = meta_data_task, example_task_data_checked)
 #> 🔍 Validating meta_data against data...
-#> 
+#> Warning in check_meta_data(meta_data = meta_data_task, example_task_data_checked): ⚠ Variable TaskName declared in meta_data but not found in any dataset.
+#> Warning in check_meta_data(meta_data = meta_data_task, example_task_data_checked): ⚠ Variable TaskDescription declared in meta_data but not found in any dataset.
 #> ✔ participant_id ...ok
 #> Warning in check_meta_data(meta_data = meta_data_task, example_task_data_checked): ⚠ Variable percent_correct declared in meta_data but not found in any dataset.
 #> ✔ response_time ...ok
@@ -328,18 +343,11 @@ write_task_tsv(data = example_task_data_checked, bids_dir = "example_bids",
                path_variables = c("participant_id", "session"), 
                ignore_variables = c("age", "sex"))
 #> Variable task does not exist in the data and will be imputed as reaction
-#> Main BIDS directory successfully created: example_bids
-#> Folder successfully created: example_bids/sub-1/ses-01/beh
 #> Task data saved: example_bids/sub-1/ses-01/beh/sub-1_ses-01_task-reaction_beh.tsv
-#> Folder successfully created: example_bids/sub-2/ses-01/beh
 #> Task data saved: example_bids/sub-2/ses-01/beh/sub-2_ses-01_task-reaction_beh.tsv
-#> Folder successfully created: example_bids/sub-3/ses-01/beh
 #> Task data saved: example_bids/sub-3/ses-01/beh/sub-3_ses-01_task-reaction_beh.tsv
-#> Folder successfully created: example_bids/sub-1/ses-02/beh
 #> Task data saved: example_bids/sub-1/ses-02/beh/sub-1_ses-02_task-reaction_beh.tsv
-#> Folder successfully created: example_bids/sub-2/ses-02/beh
 #> Task data saved: example_bids/sub-2/ses-02/beh/sub-2_ses-02_task-reaction_beh.tsv
-#> Folder successfully created: example_bids/sub-3/ses-02/beh
 #> Task data saved: example_bids/sub-3/ses-02/beh/sub-3_ses-02_task-reaction_beh.tsv
 ```
 

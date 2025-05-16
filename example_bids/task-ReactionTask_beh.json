@@ -1,4 +1,6 @@
 {
+  "TaskName": "ReactionTask",
+  "TaskDescription": "Reaction time task in which participants press a button as fast as possible.",
   "participant_id": {
     "Description": "Unique participant identifier in the format sub-X.",
     "Levels": {

@@ -36,8 +36,8 @@ devtools::document() #load first
 
 #Part 6: install and load
 #use_r()
-load_all() #load functions of package
-install() #install the package
+devtools::load_all() #load functions of package
+devtools::install() #install the package
 
 
 

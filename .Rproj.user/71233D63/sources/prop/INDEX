@@ -32,6 +32,8 @@
 ~%2FDocuments%2F01_projects%2F12_openscience%2Fr2bids%2Fbids_dir%2Fsub-1%2Fses-1%2Fbeh%2Fsub-1_ses-1_task-RTTask_beh.tsv="D16D90F2"
 ~%2FDocuments%2F01_projects%2F12_openscience%2Fr2bids%2Fbids_dir%2Fsub-1%2Fses-1%2Fsub-1_ses-1_task-RTTask_run-1_beh.tsv="3BCC4E4C"
 ~%2FDocuments%2F01_projects%2F12_openscience%2Fr2bids%2Fdevelop_package.R="7791AF72"
+~%2FDocuments%2F01_projects%2F12_openscience%2Fr2bids%2Fexample_bids%2Fparticipants.json="50066616"
+~%2FDocuments%2F01_projects%2F12_openscience%2Fr2bids%2Fexample_bids%2Ftask-ReactionTask_beh.json="1DC567EF"
 ~%2FDocuments%2F01_projects%2F12_openscience%2Fr2bids%2Fman%2Fread_bids.Rd="A44A7D5B"
 ~%2FDocuments%2F01_projects%2F12_openscience%2Fr2bids%2Fman%2Fwrite_bids.Rd="05BA908B"
 ~%2FDocuments%2F01_projects%2F12_openscience%2Fr2bids%2Fman%2Fwrite_metadata.Rd="764DEF16"

@@ -16,11 +16,18 @@
 #' meta_data <- add_meta_data(meta_data, variable_name = "age", Description = "Age of the participant", Type = "integer", Units = "years") #provide information for the age variable
 #' meta_data <- add_meta_data(meta_data = meta_data, variable_name = "condition", labels = list("experimental"="500 ml of pure alcohol", "control"="a sober session")) # note that labels for conditions are provided as a names list.
 #' meta_data #show resulting structure
-add_meta_data <- function(meta_data, variable_name, ...) {
-  stopifnot(inherits(meta_data, "metadata"))
 
-  fields <- list(...)
-  meta_data[[variable_name]] <- fields
+add_meta_data <- function(meta_data, variable_name, ...) {
+  value <- list(...)
+
+  # If only one atomic value is passed, unbox it
+  if (length(value) == 1 && is.atomic(value[[1]]) && is.null(names(value))) {
+    meta_data[[variable_name]] <- value[[1]]
+  } else {
+    # Otherwise, treat it as a list of named fields (e.g., Description, Units)
+    meta_data[[variable_name]] <- value
+  }
 
   return(meta_data)
 }
+
