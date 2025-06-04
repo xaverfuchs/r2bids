@@ -11,13 +11,10 @@
 #' @export
 #'
 #' @examples
-#' data <- data.frame(participant_id = c("sub-1", "sub-1", "sub-2", "sub-2"),
-#'                    session = c("ses-1", "ses-2", "ses-1", "ses-2"),
-#'                    run = c("run-1", "run-1", "run-1", "run-1"),
+#' example_participant_data <- data.frame(participant_id = c("sub-1", "sub-1", "sub-2", "sub-2"),
 #'                    age = c(25, 25, 30, 30),
-#'                    sex = c('m', 'm', 'f', 'f'),
-#'                    response_time = c(100, 200, 150, 180))
-#' write_participants_tsv(data, bids_dir = "BIDS")
+#'                    sex = c('m', 'm', 'f', 'f'))
+#' write_participants_tsv(example_participant_data, bids_dir = "example_bids")
 
 write_participants_tsv <- function(data, bids_dir, data_type = "participants",
                                   exclude_variables = c()) {

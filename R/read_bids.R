@@ -15,17 +15,15 @@
 #' It handles cases where session folders are present as well as cases where there are no session folders.
 #'
 #' @examples
-#' data <- data.frame(participant_id = c("sub-1", "sub-1", "sub-2", "sub-2"),
+#' example_task_data <- data.frame(participant_id = c("sub-1", "sub-1", "sub-2", "sub-2"),
 #'                    session = c("ses-1", "ses-2", "ses-1", "ses-2"),
 #'                    run = c("run-1", "run-1", "run-1", "run-1"),
-#'                    age = c(25, 25, 30, 30),
-#'                    sex = c('m', 'm', 'f', 'f'),
 #'                    response_time = c(100, 200, 150, 180))
 #'
-#' write_task_tsv(data, bids_dir = "BIDS", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
-#'                filename_prefixes = c("participant_id", "session", "RTTask"="task", "run"), ignore_variables =  c("age", "sex"))
-#' write_participants_tsv(data, bids_dir = "BIDS", include_variables = c("participant_id", "age", "sex"))
-#' read_bids(bids_dir = "BIDS")
+#' write_task_tsv(example_task_data, bids_dir = "example_bids", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
+#'                filename_variables = c("participant_id", "session", "RTTask"="task", "run"), ignore_variables =  c("age", "sex"))
+
+#' read_bids(bids_dir = "example_bids")
 
 read_bids <- function(bids_dir, data_type="beh", filename_prefixes=c("sub-", "ses-"), filename_variables=c("participant", "session"), strip_prefixes=F) {
 
@@ -34,61 +32,64 @@ read_bids <- function(bids_dir, data_type="beh", filename_prefixes=c("sub-", "se
                            recursive = TRUE, full.names = TRUE)
 
   if (length(task_files) == 0) {
-    stop("Error: No BIDS task files found for the specified task and file suffix.")
-  }
+    warning("No BIDS task files found for the specified task and file suffix.")
+    all_task_data <- list() # empty object
+  } else {
+    # Initialize an empty list to store task data
+    task_data_list <- list()
 
-  # Initialize an empty list to store task data
-  task_data_list <- list()
+    # Loop through each task file
+    for (file in task_files) {
+      # Read the task file
+      task_data <- tryCatch({
+        read.table(file, sep = "\t", header = TRUE)
+      }, error = function(e) {
+        stop(paste("Error: Failed to read task file:", file, ". Reason:", e$message))
+      })
 
-  # Loop through each task file
-  for (file in task_files) {
-    # Read the task file
-    task_data <- tryCatch({
-      read.table(file, sep = "\t", header = TRUE)
-    }, error = function(e) {
-      stop(paste("Error: Failed to read task file:", file, ". Reason:", e$message))
-    })
+      # Extract participant and session info from the file path
+      file_variables <- unlist(strsplit(basename(file), split = "_")) # By convention the variables are separated by _
 
-    # Extract participant and session info from the file path
-    file_variables <- unlist(strsplit(basename(file), split = "_")) # By convention the variables are separated by _
-
-    # Add variable to the data
-    for (i in 1:length(filename_prefixes)) {
-      var <- filename_prefixes[i]
-      var_name <- filename_variables[i]
-      if (strip_prefixes==T) {
-        task_data[, var_name] <- gsub(var, "", grep(var, file_variables, value = T))
-      } else {
-        task_data[, var_name] <- grep(var, file_variables, value = T)
+      # Add variable to the data
+      for (i in 1:length(filename_prefixes)) {
+        var <- filename_prefixes[i]
+        var_name <- filename_variables[i]
+        if (strip_prefixes==T) {
+          task_data[, var_name] <- gsub(var, "", grep(var, file_variables, value = T))
+        } else {
+          task_data[, var_name] <- grep(var, file_variables, value = T)
+        }
       }
+
+      # Append the task data to the list
+      task_data_list[[length(task_data_list) + 1]] <- task_data
     }
 
-    # Append the task data to the list
-    task_data_list[[length(task_data_list) + 1]] <- task_data
+    # Combine all task data into one data frame
+    all_task_data <- do.call(rbind, task_data_list)
+
+    # Do some rearrangements
+    all_task_data <- cbind(all_task_data[, filename_variables], all_task_data[, !names(all_task_data) %in% filename_variables, drop=F])
+
+    # Report on progress
+    message("Task data loaded from all task files.")
+
   }
-
-  # Combine all task data into one data frame
-  all_task_data <- do.call(rbind, task_data_list)
-
-  # Do some rearrangements
-  all_task_data <- cbind(all_task_data[, filename_variables], all_task_data[, !names(all_task_data) %in% filename_variables, drop=F])
-
-  # Report on progress
-  message("Task data loaded from all task files.")
 
   # Read the participants.tsv file
   participants_file <- file.path(bids_dir, "participants.tsv")
   if (!file.exists(participants_file)) {
-    stop("Error: No participants.tsv file found in the BIDS directory.")
+    participants_data <- list() #empty object
+    warning("No participants.tsv file found in the BIDS directory.")
+  } else {
+    participants_data <- tryCatch({
+      read.table(participants_file, sep = "\t", header = TRUE)
+    }, error = function(e) {
+      stop(paste("Error: Failed to read participants.tsv file. Reason:", e$message))
+    })
+
+    message("Participants data loaded from: ", participants_file)
   }
-
-  participants_data <- tryCatch({
-    read.table(participants_file, sep = "\t", header = TRUE)
-  }, error = function(e) {
-    stop(paste("Error: Failed to read participants.tsv file. Reason:", e$message))
-  })
-
-  message("Participants data loaded from: ", participants_file)
 
   # Return a list with participants data and the task data
   return(list(

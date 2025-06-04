@@ -17,14 +17,12 @@
 #' @export
 #'
 #' @examples
-#' data <- data.frame(participant_id = c("sub-1", "sub-1", "sub-2", "sub-2"),
+#' example_task_data <- data.frame(participant_id = c("sub-1", "sub-1", "sub-2", "sub-2"),
 #'                    session = c("ses-1", "ses-2", "ses-1", "ses-2"),
 #'                    run = c("run-1", "run-1", "run-1", "run-1"),
-#'                    age = c(25, 25, 30, 30),
-#'                    sex = c('m', 'm', 'f', 'f'),
 #'                    response_time = c(100, 200, 150, 180))
 #'
-#' write_task_tsv(data, bids_dir = "BIDS", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
+#' write_task_tsv(example_task_data, bids_dir = "example_bids", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
 #'                filename_variables = c("participant_id", "session", "RTTask"="task", "run"), ignore_variables =  c("age", "sex"))
 
 
