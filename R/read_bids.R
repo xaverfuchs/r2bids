@@ -5,7 +5,7 @@
 #' @param filename_prefixes A character string defining the variables that are contained in the data file name and that should then appear as columns in the data. Default is c("sub-", "ses-") assuming that the file name will at least contain the participant code and the session.
 #' @param filename_variables A character string defining how the variables defined in 'filename_prefixes' should be called in the data Default is c("participant", "session").
 #' @param strip_prefixes Defines whether or not prefixes like "sub-" should be stripped or maintained. Default is FALSE which would maintain the prefixes.
-#'
+#' @param keywords A vector of keywords that appear in the file names of the task files to identify them. This can be used when there are multiple sessions or tasks that you want to read separately.
 #'
 #' @return A list containing the participant data and the task data.
 #' @export
@@ -21,16 +21,25 @@
 #'                    response_time = c(100, 200, 150, 180))
 #'
 #' write_task_tsv(example_task_data, bids_dir = "example_bids", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
-#'                filename_variables = c("participant_id", "session", "RTTask"="task", "run"), ignore_variables =  c("age", "sex"))
+#'                filename_variables = c("participant_id", "session", "RTTask"="task", "run"))
 
 #' read_bids(bids_dir = "example_bids")
 
-read_bids <- function(bids_dir, data_type="beh", filename_prefixes=c("sub-", "ses-"), filename_variables=c("participant", "session"), strip_prefixes=F) {
+read_bids <- function(bids_dir, data_type="beh", filename_prefixes=c("sub-", "ses-"), filename_variables=c("participant", "session"), strip_prefixes=F, keywords=NULL) {
 
   # Search for all task-related .tsv files recursively
   task_files <- list.files(bids_dir, pattern = paste0("_", data_type, "\\.tsv$"),
                            recursive = TRUE, full.names = TRUE)
 
+  if (!is.null(keywords)) {
+    # recursively check that all filename prefixes are present
+    for (i in keywords) {
+      task_files <- task_files[grep(i, task_files)]
+    }
+  }
+
+
+  # check that there are files, and if so, read them one by one
   if (length(task_files) == 0) {
     warning("No BIDS task files found for the specified task and file suffix.")
     all_task_data <- list() # empty object
