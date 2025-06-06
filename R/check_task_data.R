@@ -16,7 +16,7 @@
 #'
 #' @examples
 #' # Example dataset
-#' example_data <- data.frame(ParticipantID = c(1, 2), Session = c(1, 1), RT = c(435, 876), weird_variable=c("1_2", "3_4"))
+#' example_data <- data.frame(ParticipantID = c(1, 2), Bad_Factor=c(NA, ""), Session = c(1, 1), RT = c(435, 876), weird_variable=c("1_2", "3_4"))
 #' check_task_data(data = example_data, participant_col = "ParticipantID", session_col = "Session", ignore_cols=c("weird_variable"))
 
 check_task_data <- function(data, participant_col = "participant_id", session_col = "session", ignore_cols = NULL) {
@@ -33,6 +33,11 @@ check_task_data <- function(data, participant_col = "participant_id", session_co
     renamed_labels <- to_snake_case(orig_labels)
     renamed_labels_index <- orig_labels != renamed_labels
     renamed_labels_df <- unique(data.frame(original = orig_labels, renamed = renamed_labels)[renamed_labels_index, ])
+    if (any(is.na(renamed_labels_df))) {
+      warning(paste("the variable", i, "contains missing values"))
+      renamed_labels_df <- na.omit(renamed_labels_df)
+    }
+
     if (nrow(renamed_labels_df) > 0) {
       for (k in 1:nrow(renamed_labels_df)) {
         data[data[, i] == renamed_labels_df$original[k], i] <- renamed_labels_df$renamed[k]
