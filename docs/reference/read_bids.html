@@ -121,6 +121,8 @@ It handles cases where session folders are present as well as cases where there 
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3       sub-2   ses-1           150</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4       sub-2   ses-2           180</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co">#clean up</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"example_bids/"</span>, recursive <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># it is also possible to write to separate sets of behavioral data</span></span></span>
@@ -131,20 +133,42 @@ It handles cases where session folders are present as well as cases where there 
 <span class="r-in"><span>                   task <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decisiontask"</span>, <span class="st">"decisiontask"</span>, <span class="st">"decisiontask"</span>, <span class="st">"decisiontask"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                   accuracy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.95</span>, <span class="fl">0.98</span>, <span class="fl">0.67</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="write_task_tsv.html">write_task_tsv</a></span><span class="op">(</span><span class="va">example_task_data</span>, bids_dir <span class="op">=</span> <span class="st">"example_bids"</span>, filename_prefixes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-"</span>, <span class="st">"ses-"</span>, <span class="st">"task-"</span>, <span class="st">"run-"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="fu"><a href="write_task_tsv.html">write_task_tsv</a></span><span class="op">(</span><span class="va">example_task_data2</span>, bids_dir <span class="op">=</span> <span class="st">"example_bids"</span>, filename_prefixes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-"</span>, <span class="st">"ses-"</span>, <span class="st">"task-"</span>, <span class="st">"run-"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>               filename_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"session"</span>, <span class="st">"task"</span>, <span class="st">"run"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in `[.data.frame`(data, , i):</span> undefined columns selected</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Main BIDS directory successfully created: example_bids</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Folder successfully created: example_bids/sub-1/ses-1/beh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: example_bids/sub-1/ses-1/beh/sub-1_ses-1_task-decisiontask_run-1_beh.tsv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Folder successfully created: example_bids/sub-1/ses-2/beh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: example_bids/sub-1/ses-2/beh/sub-1_ses-2_task-decisiontask_run-1_beh.tsv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Folder successfully created: example_bids/sub-2/ses-1/beh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: example_bids/sub-2/ses-1/beh/sub-2_ses-1_task-decisiontask_run-1_beh.tsv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Folder successfully created: example_bids/sub-2/ses-2/beh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: example_bids/sub-2/ses-2/beh/sub-2_ses-2_task-decisiontask_run-1_beh.tsv</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="write_task_tsv.html">write_task_tsv</a></span><span class="op">(</span><span class="va">example_task_data</span>, bids_dir <span class="op">=</span> <span class="st">"example_bids"</span>, filename_prefixes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-"</span>, <span class="st">"ses-"</span>, <span class="st">"task-"</span>, <span class="st">"run-"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               filename_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"session"</span>, <span class="st">"RTTask"</span><span class="op">=</span><span class="st">"task"</span>, <span class="st">"run"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Variable task does not exist in the data and will be imputed as RTTask</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: example_bids/sub-1/ses-1/beh/sub-1_ses-1_task-RTTask_run-1_beh.tsv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: example_bids/sub-1/ses-2/beh/sub-1_ses-2_task-RTTask_run-1_beh.tsv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: example_bids/sub-2/ses-1/beh/sub-2_ses-1_task-RTTask_run-1_beh.tsv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data saved: example_bids/sub-2/ses-2/beh/sub-2_ses-2_task-RTTask_run-1_beh.tsv</span>
 <span class="r-in"><span><span class="co">#and then read individually (using the "keywords" argument)</span></span></span>
 <span class="r-in"><span><span class="fu">read_bids</span><span class="op">(</span>bids_dir <span class="op">=</span> <span class="st">"example_bids"</span>, keywords<span class="op">=</span><span class="st">"decisiontask"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No BIDS task files found for the specified task and file suffix.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Task data loaded from all task files.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No participants.tsv file found in the BIDS directory.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $participants</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $task_data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   participant session accuracy</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       sub-1   ses-1     0.60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       sub-1   ses-2     0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       sub-2   ses-1     0.98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       sub-2   ses-2     0.67</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#clean up</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"example_bids/"</span>, recursive <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

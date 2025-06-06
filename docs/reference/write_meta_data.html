@@ -78,8 +78,11 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">meta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>response_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Description <span class="op">=</span> <span class="st">"Response time in milliseconds"</span>, Units <span class="op">=</span> <span class="st">"ms"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">write_metadata</span><span class="op">(</span>bids_dir <span class="op">=</span> <span class="st">"bids_dir"</span>, task_name <span class="op">=</span> <span class="st">"RTTask"</span>, data_type <span class="op">=</span> <span class="st">"beh"</span>, meta_data <span class="op">=</span> <span class="va">meta_data</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in write_metadata(bids_dir = "bids_dir", task_name = "RTTask", data_type = "beh",     meta_data = meta_data):</span> could not find function "write_metadata"</span>
+<span class="r-in"><span><span class="fu">write_metadata</span><span class="op">(</span>bids_dir <span class="op">=</span> <span class="st">"example_bids"</span>, task_name <span class="op">=</span> <span class="st">"RTTask"</span>, data_type <span class="op">=</span> <span class="st">"beh"</span>, meta_data <span class="op">=</span> <span class="va">meta_data</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in write_metadata(bids_dir = "example_bids", task_name = "RTTask",     data_type = "beh", meta_data = meta_data):</span> could not find function "write_metadata"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#clean up</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"example_bids/"</span>, recursive <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

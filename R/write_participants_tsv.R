@@ -15,6 +15,8 @@
 #'                    age = c(25, 25, 30, 30),
 #'                    sex = c('m', 'm', 'f', 'f'))
 #' write_participants_tsv(example_participant_data, bids_dir = "example_bids")
+#' #clean up
+#' unlink("example_bids/", recursive = T)
 
 write_participants_tsv <- function(data, bids_dir, data_type = "participants",
                                   exclude_variables = c()) {

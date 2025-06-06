@@ -28,6 +28,9 @@ This function creates a BIDS-compliant JSON metadata file for the task data.
 }
 \examples{
 meta_data <- list(response_time = list(Description = "Response time in milliseconds", Units = "ms"))
-write_metadata(bids_dir = "bids_dir", task_name = "RTTask", data_type = "beh", meta_data = meta_data)
+write_metadata(bids_dir = "example_bids", task_name = "RTTask", data_type = "beh", meta_data = meta_data)
+
+#clean up
+unlink("example_bids/", recursive = T)
 
 }

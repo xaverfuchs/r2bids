@@ -50,4 +50,6 @@ example_task_data <- data.frame(participant_id = c("sub-1", "sub-1", "sub-2", "s
 
 write_task_tsv(example_task_data2, bids_dir = "example_bids", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
                filename_variables = c("participant_id", "session", "RTTask"="task", "run"), ignore_variables =  c("age", "sex"))
+#clean up
+unlink("example_bids/", recursive = T)
 }

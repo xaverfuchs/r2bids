@@ -24,6 +24,8 @@
 #'
 #' write_task_tsv(example_task_data2, bids_dir = "example_bids", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
 #'                filename_variables = c("participant_id", "session", "RTTask"="task", "run"), ignore_variables =  c("age", "sex"))
+#' #clean up
+#' unlink("example_bids/", recursive = T)
 
 
 write_task_tsv <- function(data, bids_dir, data_type = "beh",

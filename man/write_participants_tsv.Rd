@@ -31,4 +31,6 @@ example_participant_data <- data.frame(participant_id = c("sub-1", "sub-1", "sub
                    age = c(25, 25, 30, 30),
                    sex = c('m', 'm', 'f', 'f'))
 write_participants_tsv(example_participant_data, bids_dir = "example_bids")
+#clean up
+unlink("example_bids/", recursive = T)
 }
