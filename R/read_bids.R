@@ -22,8 +22,22 @@
 #'
 #' write_task_tsv(example_task_data, bids_dir = "example_bids", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
 #'                filename_variables = c("participant_id", "session", "RTTask"="task", "run"))
-
+#'
 #' read_bids(bids_dir = "example_bids")
+#'
+#'
+#' # it is also possible to write to separate sets of behavioral data
+#'
+#' example_task_data2 <- data.frame(participant_id = c("sub-1", "sub-1", "sub-2", "sub-2"),
+#'                    session = c("ses-1", "ses-2", "ses-1", "ses-2"),
+#'                    run = c("run-1", "run-1", "run-1", "run-1"),
+#'                    task = c("decisiontask", "decisiontask", "decisiontask", "decisiontask"),
+#'                    accuracy = c(0.6, 0.95, 0.98, 0.67))
+#'
+#' write_task_tsv(example_task_data, bids_dir = "example_bids", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
+#'                filename_variables = c("participant_id", "session", "task", "run"))
+#' #and then read individually (using the "keywords" argument)
+#' read_bids(bids_dir = "example_bids", keywords="decisiontask")
 
 read_bids <- function(bids_dir, data_type="beh", filename_prefixes=c("sub-", "ses-"), filename_variables=c("participant", "session"), strip_prefixes=F, keywords=NULL) {
 

@@ -84,10 +84,12 @@ outputs warnings or errors if issues arise.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Example dataset</span></span></span>
-<span class="r-in"><span><span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ParticipantID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, Session <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, RT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">435</span>, <span class="fl">876</span><span class="op">)</span>, weird_variable<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1_2"</span>, <span class="st">"3_4"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ParticipantID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, Bad_Factor<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">""</span><span class="op">)</span>, Session <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, RT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">435</span>, <span class="fl">876</span><span class="op">)</span>, weird_variable<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1_2"</span>, <span class="st">"3_4"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">check_task_data</span><span class="op">(</span>data <span class="op">=</span> <span class="va">example_data</span>, participant_col <span class="op">=</span> <span class="st">"ParticipantID"</span>, session_col <span class="op">=</span> <span class="st">"Session"</span>, ignore_cols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weird_variable"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Step 1: checking variable labels in task data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> checking variable Bad_Factor</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>the variable Bad_Factor contains missing values</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Step 2: checking participant and session identifiers</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> renamed variable: ParticipantID -&gt; participant_id</span>
@@ -96,10 +98,11 @@ outputs warnings or errors if issues arise.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> renamed sessions to ses-01 ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Step 3: checking if all variable names are snake_case</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> renamed variable: Bad_Factor -&gt; bad_factor</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> renamed variable: RT -&gt; rt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   participant_id session  rt weird_variable</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          sub-1  ses-01 435            1_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          sub-2  ses-01 876            3_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   participant_id bad_factor session  rt weird_variable</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          sub-1       &lt;NA&gt;  ses-01 435            1_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          sub-2             ses-01 876            3_4</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

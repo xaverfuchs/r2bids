@@ -22,7 +22,7 @@
 #'                    run = c("run-1", "run-1", "run-1", "run-1"),
 #'                    response_time = c(100, 200, 150, 180))
 #'
-#' write_task_tsv(example_task_data, bids_dir = "example_bids", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
+#' write_task_tsv(example_task_data2, bids_dir = "example_bids", filename_prefixes = c("sub-", "ses-", "task-", "run-"),
 #'                filename_variables = c("participant_id", "session", "RTTask"="task", "run"), ignore_variables =  c("age", "sex"))
 
 

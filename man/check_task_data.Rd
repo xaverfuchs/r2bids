@@ -30,6 +30,6 @@ outputs warnings or errors if issues arise.
 }
 \examples{
 # Example dataset
-example_data <- data.frame(ParticipantID = c(1, 2), Session = c(1, 1), RT = c(435, 876), weird_variable=c("1_2", "3_4"))
+example_data <- data.frame(ParticipantID = c(1, 2), Bad_Factor=c(NA, ""), Session = c(1, 1), RT = c(435, 876), weird_variable=c("1_2", "3_4"))
 check_task_data(data = example_data, participant_col = "ParticipantID", session_col = "Session", ignore_cols=c("weird_variable"))
 }

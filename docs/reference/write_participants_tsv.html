@@ -46,7 +46,7 @@
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">bids_dir</span>,</span>
 <span>  data_type <span class="op">=</span> <span class="st">"participants"</span>,</span>
-<span>  include_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span><span class="op">)</span></span>
+<span>  exclude_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -64,8 +64,8 @@
 <dd><p>A string defining the data_type for the task files. Default is "participants" which will write a participants.tsv. You could however also repurpose this function to write another tsv file to contain information, for example a "session.tsv".</p></dd>
 
 
-<dt>include_variables</dt>
-<dd><p>A character vector with the variables that should make it into the file. Default is c("participant_id") but in reality it would rather be something like c("participant_id", "age", "sex").</p></dd>
+<dt>exclude_variables</dt>
+<dd><p>A character vector with the variables that should not make it into the file.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -77,14 +77,11 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>participant_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-1"</span>, <span class="st">"sub-1"</span>, <span class="st">"sub-2"</span>, <span class="st">"sub-2"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                   session <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ses-1"</span>, <span class="st">"ses-2"</span>, <span class="st">"ses-1"</span>, <span class="st">"ses-2"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                   run <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"run-1"</span>, <span class="st">"run-1"</span>, <span class="st">"run-1"</span>, <span class="st">"run-1"</span><span class="op">)</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">example_participant_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>participant_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub-1"</span>, <span class="st">"sub-1"</span>, <span class="st">"sub-2"</span>, <span class="st">"sub-2"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                   age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">25</span>, <span class="fl">30</span>, <span class="fl">30</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                   sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'m'</span>, <span class="st">'m'</span>, <span class="st">'f'</span>, <span class="st">'f'</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                   response_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">150</span>, <span class="fl">180</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">write_participants_tsv</span><span class="op">(</span><span class="va">data</span>, bids_dir <span class="op">=</span> <span class="st">"BIDS"</span>, include_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"age"</span>, <span class="st">"sex"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Participants data saved: BIDS/participants.tsv</span>
+<span class="r-in"><span>                   sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'m'</span>, <span class="st">'m'</span>, <span class="st">'f'</span>, <span class="st">'f'</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">write_participants_tsv</span><span class="op">(</span><span class="va">example_participant_data</span>, bids_dir <span class="op">=</span> <span class="st">"example_bids"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Participants data saved: example_bids/participants.tsv</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
